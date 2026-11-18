@@ -180,8 +180,15 @@ def get_today_stats():
 @app.route("/api/daily_stats", methods=["GET"])
 def get_daily_stats():
 
+    try:
+        days = int(request.args.get("days", 7))
+    except (TypeError, ValueError):
+        days = 7
+
+    days = max(1, min(days, 365))
+
     return jsonify(
-        db.get_daily_stats(7)
+        db.get_daily_stats(days)
     )
 
 

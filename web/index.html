@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智学灯 · 智能学习控制中心</title>
+    <title>智学灯 · 智能学习助手</title>
 
-    <!-- 页面样式 -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -14,12 +13,15 @@
 
 <div class="app-layout">
 
-    <!-- 左侧导航 -->
+    <!-- =================================================
+         左侧导航
+         ================================================= -->
+
     <aside class="sidebar">
 
         <div class="brand">
             <div class="brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M8.5 3h7l4.5 7.5H4L8.5 3z"></path>
                     <path d="M12 10.5V18"></path>
                     <path d="M8 21h8"></path>
@@ -28,358 +30,300 @@
             </div>
             <div>
                 <div class="brand-name">智学灯</div>
-                <div class="brand-sub">SMART DESK SYSTEM</div>
+                <div class="brand-sub">智能学习助手</div>
             </div>
         </div>
 
-        <div class="nav-caption">工作空间</div>
-
         <nav class="nav-list">
-            <a class="nav-item active" href="#overview">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                    </svg>
-                </span>
-                总览中心
-            </a>
 
-            <a class="nav-item" href="#monitor">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"></path>
-                        <circle cx="12" cy="12" r="2.6"></circle>
-                    </svg>
-                </span>
-                姿态监测
+            <a class="nav-item active" href="#overview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 10.5 12 4l8 6.5"></path>
+                    <path d="M6 9.5V20h12V9.5"></path>
+                    <path d="M10 20v-6h4v6"></path>
+                </svg>
+                首页
             </a>
 
             <a class="nav-item" href="#trend">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 20V11"></path>
-                        <path d="M10 20V4"></path>
-                        <path d="M16 20v-6"></path>
-                        <path d="M22 20V8"></path>
-                    </svg>
-                </span>
-                学习趋势
-            </a>
-
-            <a class="nav-item" href="#devices">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 7h9"></path>
-                        <path d="M17 7h3"></path>
-                        <circle cx="15" cy="7" r="2"></circle>
-                        <path d="M4 17h3"></path>
-                        <path d="M11 17h9"></path>
-                        <circle cx="9" cy="17" r="2"></circle>
-                    </svg>
-                </span>
-                设备控制
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20V11"></path>
+                    <path d="M10 20V5"></path>
+                    <path d="M16 20v-7"></path>
+                    <path d="M21 20H3"></path>
+                </svg>
+                数据统计
             </a>
 
             <a class="nav-item" href="#records">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 6h12"></path>
-                        <path d="M8 12h12"></path>
-                        <path d="M8 18h12"></path>
-                        <circle cx="4" cy="6" r="1"></circle>
-                        <circle cx="4" cy="12" r="1"></circle>
-                        <circle cx="4" cy="18" r="1"></circle>
-                    </svg>
-                </span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="8"></circle>
+                    <path d="M12 7.5V12l3 2"></path>
+                </svg>
                 历史记录
             </a>
+
+            <a class="nav-item" href="#devices">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.14.6.65 1 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"></path>
+                </svg>
+                设备控制
+            </a>
+
+            <a class="nav-item" href="#systemInfo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="8.5"></circle>
+                    <path d="M12 11v5"></path>
+                    <path d="M12 8v.01"></path>
+                </svg>
+                系统信息
+            </a>
+
         </nav>
 
-        <div class="sidebar-bottom">
-            <div class="mini-device">
-                <div class="mini-device-title">✧ 智能学习助手</div>
-                <div class="mini-device-desc">
-                    专注学习，科学坐姿。<br>
-                    让每一次学习都更高效。
-                </div>
-            </div>
+        <div class="sidebar-art" aria-hidden="true">
+            <svg viewBox="0 0 150 160" fill="none">
+                <rect x="30" y="112" width="78" height="16" rx="6" fill="#D8E7F3"></rect>
+                <rect x="36" y="98" width="66" height="16" rx="6" fill="#C7DDEE"></rect>
+                <rect x="42" y="84" width="54" height="16" rx="6" fill="#E4EFF8"></rect>
+
+                <path d="M75 84c0-18 4-30 14-40" stroke="#9BBFAE" stroke-width="2.2" stroke-linecap="round"></path>
+                <path d="M75 84C73 66 68 56 58 48" stroke="#9BBFAE" stroke-width="2.2" stroke-linecap="round"></path>
+
+                <path d="M89 44c10-6 18-2 18 6-9 3-16 1-18-6z" fill="#BFDCCB"></path>
+                <path d="M78 34c-4-10 2-17 9-14 2 8-1 13-9 14z" fill="#CFE6D8"></path>
+                <path d="M58 48c-9-3-11-12-5-16 6 4 8 10 5 16z" fill="#B7D8C6"></path>
+
+                <path d="M58 84h34l-5 36H63l-5-36z" fill="#E8D9C8"></path>
+                <path d="M55 84h40" stroke="#D8C4AE" stroke-width="2.4" stroke-linecap="round"></path>
+            </svg>
         </div>
 
     </aside>
 
-    <!-- 主页面 -->
-    <main class="main-content">
+    <!-- =================================================
+         主内容
+         ================================================= -->
 
-        <!-- 顶部 -->
-        <header class="topbar" id="overview">
+    <main class="main-content" id="overview">
 
-            <div>
-                <div class="page-title">学习控制中心</div>
-                <div class="page-subtitle">
-                    欢迎使用智学灯 · 智能学习状态实时管理平台
-                </div>
-            </div>
+        <!-- 顶部状态栏 -->
+        <header class="topbar">
 
             <div class="topbar-right">
-                <div class="date-pill" id="currentDate">
-                    学习数据中心
-                </div>
 
-                <div class="status-pill">
+                <div class="run-state" id="systemRunState">
                     <span class="status-dot"></span>
-                    智能管理系统
-                </div>
-            </div>
-
-        </header>
-
-        <!-- 欢迎横幅 -->
-        <section class="hero">
-
-            <div class="hero-content">
-                <div class="hero-label">
-                    SMART LEARNING EXPERIENCE
+                    系统运行中
                 </div>
 
-                <div class="hero-title">
-                    让专注成为一种习惯
-                </div>
-
-                <div class="hero-desc">
-                    智能感知 · 科学提醒 · 高效学习
-                </div>
-            </div>
-
-            <svg class="hero-art" viewBox="0 0 260 180" fill="none" aria-hidden="true">
-                <circle cx="152" cy="84" r="72" fill="#ffffff" opacity="0.32"></circle>
-
-                <path d="M96 52 58 128h112L96 52z" fill="#ffffff" opacity="0.24"></path>
-
-                <path d="M84 30h34l16 26H68l16-26z"
-                      stroke="#7d9ab8" stroke-width="2.2" stroke-linejoin="round"></path>
-
-                <path d="M101 56v52c0 8 6 14 14 14h20"
-                      stroke="#7d9ab8" stroke-width="2.2" stroke-linecap="round"></path>
-
-                <path d="M118 128h42"
-                      stroke="#7d9ab8" stroke-width="3" stroke-linecap="round"></path>
-
-                <path d="M38 138h184"
-                      stroke="#c3d5e6" stroke-width="2" stroke-linecap="round"></path>
-
-                <rect x="54" y="126" width="36" height="7" rx="2"
-                      stroke="#8fa9c2" stroke-width="1.8"></rect>
-
-                <rect x="60" y="118" width="28" height="7" rx="2"
-                      stroke="#a6bcd0" stroke-width="1.8"></rect>
-
-                <circle cx="196" cy="46" r="3" fill="#a6bcd0"></circle>
-                <circle cx="210" cy="62" r="2" fill="#b8cadd"></circle>
-                <circle cx="54" cy="58" r="2" fill="#b8cadd"></circle>
-            </svg>
-
-        </section>
-
-        <!-- 累计数据 -->
-        <section class="stats-grid">
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 6a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0-2 2V6z"></path>
-                        <path d="M4 20a2 2 0 0 1 2-2h13v2H6"></path>
-                    </svg>
-                </div>
-                <div class="stat-label">累计学习次数</div>
-                <div class="stat-value" id="totalSessions">0</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
+                <div class="clock">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="8.5"></circle>
                         <path d="M12 7.5V12l3 2"></path>
                     </svg>
+                    <span id="liveClock">--</span>
                 </div>
-                <div class="stat-label">累计学习时间</div>
-                <div class="stat-value" id="totalMinutes">0 分钟</div>
+
+                <div class="avatar" aria-hidden="true">学</div>
+
             </div>
 
-            <div class="stat-card">
+        </header>
+
+        <!-- 顶部状态卡片 -->
+        <section class="stats-grid">
+
+            <div class="stat-card stat-mint">
                 <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 9a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6z"></path>
-                        <path d="M10 19a2.2 2.2 0 0 0 4 0"></path>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2.5 9.5 12 5l9.5 4.5L12 14 2.5 9.5z"></path>
+                        <path d="M6.5 11.5V17c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5.5"></path>
                     </svg>
                 </div>
-                <div class="stat-label">累计坐姿提醒</div>
-                <div class="stat-value" id="totalReminders">0 次</div>
+                <div class="stat-content">
+                    <div class="stat-label">学习状态</div>
+                    <div class="stat-value" id="studyStateText">
+                        <i class="dot" id="studyStateDot"></i>等待开始
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-blue">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="8.5"></circle>
+                        <path d="M12 7.5V12l3 2"></path>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">学习时长</div>
+                    <div class="stat-value" id="statStudyMinutes">0 分钟</div>
+                </div>
+                <svg class="stat-spark" viewBox="0 0 64 34" fill="none" aria-hidden="true">
+                    <rect x="4" y="20" width="7" height="10" rx="2" fill="#C3D8EE"></rect>
+                    <rect x="16" y="14" width="7" height="16" rx="2" fill="#B3CDE8"></rect>
+                    <rect x="28" y="8" width="7" height="22" rx="2" fill="#9DBEDF"></rect>
+                    <rect x="40" y="17" width="7" height="13" rx="2" fill="#C3D8EE"></rect>
+                </svg>
+            </div>
+
+            <div class="stat-card stat-peach">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9z"></path>
+                        <path d="M16 10h2.5a2.5 2.5 0 0 1 0 5H16"></path>
+                        <path d="M7 5.5c0-.8 1-1.2 1-2"></path>
+                        <path d="M11 5.5c0-.8 1-1.2 1-2"></path>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">休息时间</div>
+                    <div class="stat-value" id="restDuration">5 分钟</div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-teal">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="6.5" r="3"></circle>
+                        <path d="M12 9.5V16h5"></path>
+                        <path d="M12 12l-4 1"></path>
+                        <path d="M12 16l-2 5"></path>
+                        <path d="M17 16l3 5"></path>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">姿势状态</div>
+                    <div class="stat-value posture-value" id="statPostureText">等待识别</div>
+                </div>
+                <span class="stat-check" id="postureCheck">✓</span>
             </div>
 
         </section>
 
-        <!-- 实时监测区域 -->
-        <section class="monitor-layout" id="monitor">
+        <!-- 主区域 -->
+        <div class="dashboard-grid">
 
-            <!-- 摄像头 -->
-            <div class="card video-card">
+            <div class="main-column">
 
-                <div class="card-title">
-                    <span>实时视觉监测</span>
-                    <span class="live-tag" id="cameraIndicator">
-                        ● 等待连接
-                    </span>
-                </div>
+                <!-- 实时姿势监测 -->
+                <section class="card monitor-card" id="monitor">
 
-                <div class="video-container">
-
-                    <div class="video-overlay">
-                        LIVE · 姿态识别画面
-                    </div>
-
-                    <img
-                        id="cameraFeed"
-                        class="video-image"
-                        src="/video_feed"
-                        alt="等待摄像头画面"
-                    >
-
-                </div>
-
-                <div class="video-tip" id="videoMessage">
-                    正在等待摄像头连接……
-                </div>
-
-            </div>
-
-            <!-- 右侧状态 -->
-            <div class="monitor-side">
-
-                <div class="monitor-card">
-                    <div class="monitor-label">当前人员状态</div>
-                    <div class="monitor-value" id="personStatus">
-                        等待检测
-                    </div>
-                    <div class="monitor-note">
-                        基于摄像头实时感知
-                    </div>
-                </div>
-
-                <div class="monitor-card">
-                    <div class="monitor-label">当前坐姿状态</div>
-                    <div class="monitor-value" id="posture">
-                        加载中
-                    </div>
-                    <div class="monitor-note">
-                        上半身姿态智能分析
-                    </div>
-                </div>
-
-                <div class="monitor-two">
-
-                    <div class="monitor-card">
-                        <div class="monitor-label">学习状态</div>
-                        <div class="monitor-value" id="studyStatus">
-                            空闲
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"></path>
+                                <circle cx="12" cy="12" r="2.6"></circle>
+                            </svg>
+                            实时姿势监测
+                            <span class="detect-state" id="cameraIndicator">
+                                ● 检测中...
+                            </span>
                         </div>
+
+                        <button class="pill-btn pill-green" onclick="postureControl('calibrate')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="8"></circle>
+                                <circle cx="12" cy="12" r="2.4"></circle>
+                                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+                            </svg>
+                            姿态校准
+                        </button>
                     </div>
 
-                    <div class="monitor-card">
-                        <div class="monitor-label">阶段剩余时间</div>
-                        <div class="monitor-value" id="studyCountdown">
-                            00:00
+                    <div class="monitor-body">
+
+                        <div class="video-container">
+                            <img
+                                id="cameraFeed"
+                                class="video-image"
+                                src="/video_feed"
+                                alt="等待摄像头画面"
+                            >
+                            <span class="video-overlay">LIVE · 姿态识别画面</span>
                         </div>
-                    </div>
 
-                </div>
+                        <div class="posture-side">
 
-                <div class="monitor-two">
+                            <div class="ring" id="postureRingBox">
+                                <svg viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                                    <circle class="ring-progress" id="postureRing" cx="60" cy="60" r="52"></circle>
+                                </svg>
 
-                    <div class="monitor-card">
-                        <div class="monitor-label">本次学习时长</div>
-                        <div class="monitor-value" id="studyTime">
-                            0 分钟
-                        </div>
-                    </div>
-
-                    <div class="monitor-card">
-                        <div class="monitor-label">本次提醒次数</div>
-                        <div class="monitor-value" id="reminders">
-                            0 次
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="normalPanel" class="normal-panel">
-                    当前坐姿状态正常，请继续保持。
-                </div>
-
-                <div id="warningPanel" class="warning-panel">
-
-                    <div class="warning-title" id="warningTitle">
-                        检测到坐姿异常
-                    </div>
-
-                    <div class="warning-description" id="warningDescription">
-                        请及时调整坐姿。
-                    </div>
-
-                    <div class="warning-countdown" id="warningCountdown">
-                        5.0 秒
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- 今日数据、趋势和设备控制 -->
-        <section class="bottom-grid">
-
-            <!-- 左侧：今日数据 + 趋势 -->
-            <div class="left-bottom-column">
-
-                <div class="card">
-
-                    <div class="card-title">
-                        <span>今日学习数据</span>
-                        <small>今日实时统计</small>
-                    </div>
-
-                    <div class="today-grid">
-
-                        <div class="today-item">
-                            <div class="today-label">
-                                今日累计学习时长
+                                <div class="ring-icon">
+                                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="23" cy="12" r="4.5"></circle>
+                                        <path d="M23 17v10h9"></path>
+                                        <path d="M23 22l-7 1"></path>
+                                        <path d="M23 27l-4 9"></path>
+                                        <path d="M32 27l6 9"></path>
+                                    </svg>
+                                    <span class="ring-check" id="ringCheck">✓</span>
+                                </div>
                             </div>
-                            <div class="today-value" id="todayStudy">
-                                0 分钟
-                            </div>
-                        </div>
 
-                        <div class="today-item">
-                            <div class="today-label">
-                                今日坐姿提醒次数
-                            </div>
-                            <div class="today-value" id="todayReminders">
-                                0 次
-                            </div>
+                            <div class="ring-text" id="ringPostureText">等待识别</div>
+
+                            <button class="pill-btn pill-soft" onclick="postureControl('reset_calibration')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 11a8 8 0 1 0-2.3 6"></path>
+                                    <path d="M20 5v6h-6"></path>
+                                </svg>
+                                重新校准
+                            </button>
+
                         </div>
 
                     </div>
 
-                </div>
+                    <div id="normalPanel" class="normal-panel">
+                        当前坐姿状态正常，请继续保持。
+                    </div>
 
-                <div class="card" id="trend">
+                    <div id="warningPanel" class="warning-panel">
 
-                    <div class="card-title">
-                        <span>最近 7 天学习趋势</span>
-                        <small>WEEKLY ANALYSIS</small>
+                        <div class="warning-title" id="warningTitle">
+                            检测到坐姿异常
+                        </div>
+
+                        <div class="warning-description" id="warningDescription">
+                            请及时调整坐姿。
+                        </div>
+
+                        <div class="warning-countdown" id="warningCountdown">
+                            5.0 秒
+                        </div>
+
+                    </div>
+
+                    <div class="video-tip" id="videoMessage">
+                        正在等待摄像头连接……
+                    </div>
+
+                </section>
+
+                <!-- 学习数据统计 -->
+                <section class="card chart-card" id="trend">
+
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 20V11"></path>
+                                <path d="M10 20V5"></path>
+                                <path d="M16 20v-7"></path>
+                                <path d="M21 20H3"></path>
+                            </svg>
+                            学习数据统计
+                        </div>
+
+                        <div class="segmented" id="trendTabs">
+                            <button class="active" data-days="7">近7天</button>
+                            <button data-days="30">近30天</button>
+                            <button data-days="90">近90天</button>
+                        </div>
                     </div>
 
                     <div class="chart" id="dailyChart">
@@ -387,166 +331,219 @@
                     </div>
 
                     <div class="chart-tip" id="chartTip">
-                        数据来源：本地 SQLite 学习记录 · 单位：分钟
+                        数据来源：本地 SQLite 学习记录 · 蓝线为学习时长，绿线为提醒次数
                     </div>
 
-                </div>
+                </section>
 
             </div>
 
-            <!-- 右侧：设备控制 -->
-            <div class="card" id="devices">
+            <aside class="side-column">
 
-                <div class="card-title">
-                    <span>智能设备控制</span>
-                    <small>DEVICE CONTROL</small>
-                </div>
+                <!-- 设备状态 -->
+                <section class="card" id="devices">
 
-                <!-- 学习计时控制 -->
-                <div class="device-row device-block">
-
-                    <div class="device-heading">
-                        <div class="device-name">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="13" r="7.5"></circle>
-                                <path d="M12 9v4l2.5 1.6"></path>
-                                <path d="M9 2.5h6"></path>
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"></path>
                             </svg>
-                            学习计时控制
-                        </div>
-                        <div class="device-desc">
-                            25 分钟专注学习 · 5 分钟休息
+                            设备状态
                         </div>
                     </div>
 
-                    <div class="button-group button-wrap">
-                        <button onclick="timerControl('start')">
-                            开始 / 继续
-                        </button>
-
-                        <button class="off" onclick="timerControl('pause')">
-                            暂停
-                        </button>
-
-                        <button class="off" onclick="timerControl('reset')">
-                            重置
-                        </button>
-                    </div>
-
-                    <div class="device-desc device-status">
-                        当前状态：
-                        <span id="timerControlStatus">空闲</span>
-
-                        <span class="timer-remaining">
-                            剩余时间：
-                            <span id="timerControlCountdown">00:00</span>
-                        </span>
-                    </div>
-
-                </div>
-
-                <!-- 姿态校准控制 -->
-                <div class="device-row device-block">
-
-                    <div class="device-heading">
-                        <div class="device-name">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="8"></circle>
-                                <circle cx="12" cy="12" r="2.4"></circle>
-                                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
-                            </svg>
-                            姿态校准控制
-                        </div>
-                        <div class="device-desc">
-                            首次使用或坐姿变化后，可重新校准正常坐姿
-                        </div>
-                    </div>
-
-                    <div class="button-group button-wrap">
-                        <button onclick="postureControl('calibrate')">
-                            姿态初始校准
-                        </button>
-
-                        <button
-                            class="off"
-                            onclick="postureControl('reset_calibration')">
-                            重新等待校准
-                        </button>
-                    </div>
-
-                </div>
-
-                <!-- 台灯控制 -->
-                <div class="device-row">
-
-                    <div>
-                        <div class="device-name">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="device-row">
+                        <div class="device-left">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8.5 4h7l4 7H4.5l4-7z"></path>
                                 <path d="M12 11v6"></path>
                                 <path d="M8.5 20h7"></path>
                             </svg>
-                            智能台灯
-                            <span class="device-state" id="lightStatus">已关闭</span>
+                            台灯状态
                         </div>
-                        <div class="device-desc">
-                            控制台灯开关状态
-                        </div>
-                    </div>
 
-                    <div class="button-group">
-                        <button onclick="control('light', true)">
-                            开启
-                        </button>
+                        <span class="badge" id="lightBadge">已关闭</span>
 
-                        <button class="off" onclick="control('light', false)">
-                            关闭
+                        <button class="switch" id="lightToggle" onclick="toggleLight()" aria-label="切换台灯">
+                            <span></span>
                         </button>
                     </div>
 
-                </div>
-
-                <!-- 蜂鸣器控制 -->
-                <div class="device-row">
-
-                    <div>
-                        <div class="device-name">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="device-row">
+                        <div class="device-left">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 9a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6z"></path>
                                 <path d="M10 19a2.2 2.2 0 0 0 4 0"></path>
                             </svg>
+                            蜂鸣器状态
+                        </div>
+
+                        <span class="badge" id="buzzerBadge">已开启</span>
+
+                        <button class="switch on" id="buzzerToggle" onclick="toggleBuzzer()" aria-label="切换蜂鸣器">
+                            <span></span>
+                        </button>
+                    </div>
+
+                    <div class="device-row">
+                        <div class="device-left">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+                                <path d="M8 20h8"></path>
+                                <path d="M12 16v4"></path>
+                            </svg>
+                            OLED 显示
+                        </div>
+
+                        <span class="badge badge-muted">模拟模式</span>
+                    </div>
+
+                </section>
+
+                <!-- 学习计时 -->
+                <section class="card timer-card">
+
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="13" r="7.5"></circle>
+                                <path d="M12 9v4l2.5 1.6"></path>
+                                <path d="M9 2.5h6"></path>
+                            </svg>
+                            学习计时
+                        </div>
+
+                        <span class="badge" id="timerStatus">空闲</span>
+                    </div>
+
+                    <div class="timer-display" id="timerControlCountdown">25:00</div>
+
+                    <div class="timer-sub">
+                        阶段剩余时间 · 25 分钟专注 / 5 分钟休息
+                    </div>
+
+                    <div class="timer-actions">
+                        <button class="pill-btn pill-primary" onclick="timerControl('start')">
+                            开始 / 继续
+                        </button>
+
+                        <button class="pill-btn" onclick="timerControl('pause')">
+                            暂停
+                        </button>
+
+                        <button class="pill-btn pill-line" onclick="timerControl('reset')">
+                            重置
+                        </button>
+                    </div>
+
+                </section>
+
+                <!-- 快捷控制 -->
+                <section class="card">
+
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"></path>
+                            </svg>
+                            快捷控制
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="quick-btn quick-blue" onclick="control('light', true)">
+                            开灯
+                        </button>
+
+                        <button class="quick-btn quick-peach" onclick="control('light', false)">
+                            关灯
+                        </button>
+
+                        <button class="quick-btn quick-pink" onclick="toggleBuzzer()">
                             蜂鸣提醒
-                            <span class="device-state" id="buzzerStatus">已开启</span>
-                        </div>
-                        <div class="device-desc">
-                            控制坐姿异常声音提醒
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- 系统信息 -->
+                <section class="card system-card" id="systemInfo">
+
+                    <div class="card-head">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="8.5"></circle>
+                                <path d="M12 11v5"></path>
+                                <path d="M12 8v.01"></path>
+                            </svg>
+                            系统信息
                         </div>
                     </div>
 
-                    <div class="button-group">
-                        <button onclick="control('buzzer', true)">
-                            开启
-                        </button>
-
-                        <button class="off" onclick="control('buzzer', false)">
-                            关闭
-                        </button>
+                    <div class="info-row">
+                        <span>设备名称</span>
+                        <strong>智学灯</strong>
                     </div>
 
-                </div>
+                    <div class="info-row">
+                        <span>摄像头状态</span>
+                        <strong id="sysCamera">检测中</strong>
+                    </div>
 
-                <div id="message">等待设备连接……</div>
+                    <div class="info-row">
+                        <span>今日学习</span>
+                        <strong>
+                            <span id="todayStudy">0 分钟</span>
+                            ·
+                            <span id="todayReminders">0 次提醒</span>
+                        </strong>
+                    </div>
 
-            </div>
+                    <div class="info-row">
+                        <span>数据库状态</span>
+                        <strong class="ok" id="sysDatabase">正常</strong>
+                    </div>
 
-        </section>
+                    <svg class="system-lamp" viewBox="0 0 120 110" fill="none" aria-hidden="true">
+                        <path d="M40 20h26l12 20H28l12-20z" stroke="#C3D6E7" stroke-width="2"></path>
+                        <path d="M53 40v36c0 6 4 10 10 10h12" stroke="#C3D6E7" stroke-width="2" stroke-linecap="round"></path>
+                        <path d="M65 86h22" stroke="#C3D6E7" stroke-width="2.6" stroke-linecap="round"></path>
+                        <path d="M30 96h80" stroke="#DCE7F1" stroke-width="2" stroke-linecap="round"></path>
+                        <circle cx="53" cy="40" r="14" fill="#FFF6E4"></circle>
+                    </svg>
+
+                </section>
+
+            </aside>
+
+        </div>
 
         <!-- 历史记录 -->
-        <section class="card" id="records">
+        <section class="card records-card" id="records">
 
-            <div class="card-title">
-                <span>学习历史记录</span>
-                <small>STUDY HISTORY</small>
+            <div class="card-head">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 6h12"></path>
+                        <path d="M8 12h12"></path>
+                        <path d="M8 18h12"></path>
+                        <circle cx="4" cy="6" r="1"></circle>
+                        <circle cx="4" cy="12" r="1"></circle>
+                        <circle cx="4" cy="18" r="1"></circle>
+                    </svg>
+                    学习历史记录
+                </div>
+
+                <div class="summary-line">
+                    累计 <span id="totalSessions">0</span> 次
+                    ·
+                    <span id="totalMinutes">0 分钟</span>
+                    ·
+                    提醒 <span id="totalReminders">0 次</span>
+                </div>
             </div>
 
             <div class="table-wrap">
@@ -576,9 +573,10 @@
 
             </div>
 
+            <div id="message">等待设备连接……</div>
+
         </section>
 
-        <!-- 页面底部 -->
         <footer class="footer">
             SMART DESK · INTELLIGENT LEARNING SYSTEM
         </footer>
@@ -587,7 +585,6 @@
 
 </div>
 
-<!-- 页面交互逻辑 -->
 <script src="/js/app.js"></script>
 
 </body>

@@ -48,34 +48,56 @@ function showMessage(message) {
 
 
 // =====================================================
-// 日期
+// 顶部时间
 // =====================================================
 
-setText(
-    "currentDate",
-    new Date().toLocaleDateString("zh-CN", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    })
-);
+function updateClock() {
+
+    const now = new Date();
+
+    const pad = value => String(value).padStart(2, "0");
+
+    setText(
+        "liveClock",
+        now.getFullYear() + "年" +
+        (now.getMonth() + 1) + "月" +
+        now.getDate() + "日 " +
+        pad(now.getHours()) + ":" +
+        pad(now.getMinutes()) + ":" +
+        pad(now.getSeconds())
+    );
+}
+
+updateClock();
+setInterval(updateClock, 1000);
 
 
 // =====================================================
-// 姿态状态统一处理
+// 侧边栏导航高亮
 // =====================================================
 
-// 统一转成小写，解决 NORMAL / normal 大小写不一致问题
+document.querySelectorAll(".nav-item").forEach(item => {
+
+    item.addEventListener("click", () => {
+
+        document.querySelectorAll(".nav-item").forEach(other => {
+            other.classList.remove("active");
+        });
+
+        item.classList.add("active");
+    });
+});
+
+
+// =====================================================
+// 姿态与学习状态文字
+// =====================================================
+
 function normalizePosture(value) {
     return String(value ?? "unknown")
         .trim()
         .toLowerCase();
 }
-
-
-// =====================================================
-// 状态文字转换
-// =====================================================
 
 function postureText(value) {
 
@@ -104,7 +126,6 @@ function postureText(value) {
     return map[posture] || String(value || "等待识别");
 }
 
-
 function studyStatusText(value) {
 
     const status = String(value ?? "idle")
@@ -112,15 +133,14 @@ function studyStatusText(value) {
         .toLowerCase();
 
     const map = {
-        idle: "空闲",
-        studying: "学习中",
+        idle: "等待开始",
+        studying: "专注学习中",
         resting: "休息中",
         paused: "已暂停"
     };
 
-    return map[status] || value || "空闲";
+    return map[status] || value || "等待开始";
 }
-
 
 function formatTime(seconds) {
 
@@ -140,6 +160,9 @@ function formatTime(seconds) {
 
 let statusRequesting = false;
 
+let lightEnabled = false;
+let buzzerEnabled = true;
+
 
 async function refreshStatus() {
 
@@ -151,21 +174,34 @@ async function refreshStatus() {
 
         const data = await requestJSON("/api/status");
 
+        lightEnabled = Boolean(data.light);
+        buzzerEnabled = Boolean(data.buzzer_enabled);
 
-        // =================================================
-        // 摄像头
-        // =================================================
 
+        // 系统运行状态
+        const runState = getElement("systemRunState");
+
+        if (runState) {
+            runState.classList.remove("offline");
+        }
+
+        const database = getElement("sysDatabase");
+
+        if (database) {
+            database.textContent = "正常";
+            database.classList.add("ok");
+        }
+
+
+        // 摄像头状态
         const camera = getElement("cameraIndicator");
 
         if (camera) {
 
             if (data.camera_online) {
 
-                camera.textContent = "● 摄像头在线";
-
-                camera.style.background = "#E8F9F1";
-                camera.style.color = "#38A77B";
+                camera.textContent = "● 检测中...";
+                camera.style.color = "#63a98b";
 
                 setText(
                     "videoMessage",
@@ -175,9 +211,7 @@ async function refreshStatus() {
             } else {
 
                 camera.textContent = "● 摄像头离线";
-
-                camera.style.background = "#FFF0EE";
-                camera.style.color = "#D66B61";
+                camera.style.color = "#c17878";
 
                 setText(
                     "videoMessage",
@@ -186,223 +220,120 @@ async function refreshStatus() {
             }
         }
 
-
-        // =================================================
-        // 人员状态
-        // =================================================
-
         setText(
-            "personStatus",
-            data.person_detected
-                ? "已检测到人员"
-                : "未检测到人员"
+            "sysCamera",
+            data.camera_online ? "在线" : "离线"
         );
 
 
-        // =================================================
         // 姿态状态
-        // =================================================
-
         const posture = normalizePosture(data.posture);
 
-        setText("posture", postureText(posture));
+        const abnormal =
+            Boolean(data.person_detected) &&
+            ![
+                "normal",
+                "unknown",
+                "wait calibration",
+                "keypoints not clear",
+                "no_person"
+            ].includes(posture);
+
+        setText("statPostureText", postureText(posture));
+        setText("ringPostureText", postureText(posture));
+
+        updatePostureVisual(posture, abnormal, Boolean(data.alert));
 
 
-        // =================================================
         // 学习状态
-        // =================================================
-
         const studyStatus = studyStatusText(data.study_status);
 
-        setText("studyStatus", studyStatus);
+        const stateText = getElement("studyStateText");
+        const stateDot = getElement("studyStateDot");
 
-        setText("timerControlStatus", studyStatus);
+        if (stateText && stateDot) {
+
+            stateText.textContent = studyStatus;
+            stateText.prepend(stateDot);
+
+            stateDot.className = "dot";
+
+            if (data.study_status === "studying") {
+                stateDot.classList.add("green");
+            } else if (data.study_status === "resting") {
+                stateDot.classList.add("amber");
+            }
+        }
+
+        const timerStatus = getElement("timerStatus");
+
+        if (timerStatus) {
+
+            timerStatus.textContent = studyStatus;
+
+            timerStatus.className = "badge";
+
+            if (data.study_status === "studying") {
+                timerStatus.classList.add("on");
+            } else if (data.study_status === "idle") {
+                timerStatus.classList.add("off");
+            }
+        }
 
 
-        // =================================================
-        // 剩余时间
-        // =================================================
-
+        // 计时与学习时长
         const remaining = formatTime(data.remaining_seconds);
 
-        setText("studyCountdown", remaining);
-
-        setText("timerControlCountdown", remaining);
-
-
-        // =================================================
-        // 本次学习时间
-        // =================================================
+        const idle = String(data.study_status || "idle") === "idle";
 
         setText(
-            "studyTime",
+            "timerControlCountdown",
+            idle && Number(data.remaining_seconds) === 0
+                ? "25:00"
+                : remaining
+        );
+
+        setText(
+            "statStudyMinutes",
             (Number(data.study_minutes) || 0) + " 分钟"
         );
 
 
-        // =================================================
-        // 本次提醒次数
-        // =================================================
-
-        setText(
-            "reminders",
-            (Number(data.reminder_count) || 0) + " 次"
-        );
-
-
-        // =================================================
         // 设备状态
-        // =================================================
-
         setText(
-            "lightStatus",
+            "lightBadge",
             data.light ? "已开启" : "已关闭"
         );
 
         setText(
-            "buzzerStatus",
-            data.buzzer_enabled ? "已开启" : "已关闭"
+            "buzzerBadge",
+            data.buzzer_enabled ? "已开启" : "已静音"
         );
 
-
-        // =================================================
-        // 坐姿异常判断
-        // =================================================
-
-        // 只有真正识别到人员，并且姿态不是正常、未知、
-        // 等待校准或无法识别时，才判断为异常。
-
-        // 正常状态和暂时无法判断的状态
-        const normalPostures = [
-            "normal",
-            "unknown",
-            "wait calibration",
-            "keypoints not clear",
-            "no_person"
-        ];
-
-        // 只要检测到人员，且姿态不属于正常或等待状态，
-        // 就判断为异常姿势
-        const abnormal =
-            Boolean(data.person_detected) &&
-            !normalPostures.includes(posture);
+        updateSwitch("lightToggle", Boolean(data.light));
+        updateSwitch("buzzerToggle", Boolean(data.buzzer_enabled));
 
 
-        const warningPanel = getElement("warningPanel");
+        // 坐姿提示面板
+        updatePosturePanels(posture, abnormal, data);
 
-        const normalPanel = getElement("normalPanel");
-
-
-        // =================================================
-        // 异常坐姿提醒
-        // =================================================
-
-        if (abnormal) {
-
-            if (warningPanel) {
-                warningPanel.classList.add("show");
-            }
-
-            if (normalPanel) {
-                normalPanel.style.display = "none";
-            }
-
-
-            setText(
-                "warningTitle",
-                "检测到坐姿异常：" + postureText(posture)
-            );
-
-
-            const elapsed = Number(data.alert_elapsed) || 0;
-
-            const remainingAlert = Math.max(
-                0,
-                Number(data.alert_remaining) || 0
-            );
-
-
-            if (data.alert) {
-
-                setText(
-                    "warningDescription",
-                    "异常姿势持续时间已达到提醒阈值，请调整坐姿。"
-                );
-
-                setText(
-                    "warningCountdown",
-                    "已触发提醒"
-                );
-
-            } else {
-
-                setText(
-                    "warningDescription",
-                    "请及时调整坐姿，持续异常达到 5 秒将触发提醒。"
-                );
-
-                setText(
-                    "warningCountdown",
-                    "已持续 " +
-                    elapsed.toFixed(1) +
-                    " 秒，距离提醒还有 " +
-                    remainingAlert.toFixed(1) +
-                    " 秒"
-                );
-            }
-
-        } else {
-
-            // =================================================
-            // 正常状态 / 等待识别 / 等待校准
-            // =================================================
-
-            if (warningPanel) {
-                warningPanel.classList.remove("show");
-            }
-
-            if (normalPanel) {
-                normalPanel.style.display = "block";
-            }
-
-
-            if (!data.person_detected) {
-
-                setText(
-                    "normalPanel",
-                    "当前未检测到人员或关键点不清晰，" +
-                    "请进入识别范围并保持上半身完整可见。"
-                );
-
-            } else if (
-                posture === "keypoints not clear" ||
-                posture === "unknown"
-            ) {
-
-                setText(
-                    "normalPanel",
-                    "暂时无法清晰识别坐姿，请调整摄像头范围或坐姿。"
-                );
-
-            } else if (posture === "wait calibration") {
-
-                setText(
-                    "normalPanel",
-                    "尚未建立正常坐姿基准，请保持正常坐姿并点击姿态初始校准。"
-                );
-
-            } else {
-
-                setText(
-                    "normalPanel",
-                    "当前坐姿状态正常，请继续保持。"
-                );
-            }
-        }
 
     } catch (error) {
 
         console.error("实时状态加载失败：", error);
+
+        const runState = getElement("systemRunState");
+
+        if (runState) {
+            runState.classList.add("offline");
+        }
+
+        const database = getElement("sysDatabase");
+
+        if (database) {
+            database.textContent = "无法连接";
+            database.classList.remove("ok");
+        }
 
         showMessage("无法连接设备服务，请检查后台程序");
 
@@ -410,6 +341,189 @@ async function refreshStatus() {
 
         statusRequesting = false;
     }
+}
+
+
+// =====================================================
+// 姿势视觉反馈
+// =====================================================
+
+function updatePostureVisual(posture, abnormal, alerting) {
+
+    const ringBox = getElement("postureRingBox");
+    const ringText = getElement("ringPostureText");
+    const statCheck = getElement("postureCheck");
+    const ringCheck = getElement("ringCheck");
+
+    if (ringBox) {
+        ringBox.className = "ring";
+    }
+
+    if (ringText) {
+        ringText.className = "ring-text";
+    }
+
+    if (statCheck) {
+        statCheck.className = "stat-check";
+    }
+
+    let mark = "?";
+
+    if (abnormal) {
+
+        const danger = alerting;
+
+        if (ringBox) {
+            ringBox.classList.add(danger ? "danger" : "warn");
+        }
+
+        if (ringText) {
+            ringText.classList.add(danger ? "danger" : "warn");
+        }
+
+        if (statCheck) {
+            statCheck.classList.add("warn");
+        }
+
+        mark = "!";
+
+    } else if (posture === "normal") {
+
+        mark = "✓";
+
+    } else {
+
+        if (ringBox) {
+            ringBox.classList.add("idle");
+        }
+
+        if (ringText) {
+            ringText.classList.add("idle");
+        }
+
+        if (statCheck) {
+            statCheck.classList.add("idle");
+        }
+    }
+
+    if (statCheck) {
+        statCheck.textContent = mark;
+    }
+
+    if (ringCheck) {
+        ringCheck.textContent = mark;
+        ringCheck.className = "ring-check";
+
+        if (mark !== "✓") {
+            ringCheck.classList.add("hide");
+        }
+    }
+}
+
+
+// =====================================================
+// 坐姿提示面板
+// =====================================================
+
+function updatePosturePanels(posture, abnormal, data) {
+
+    const warningPanel = getElement("warningPanel");
+    const normalPanel = getElement("normalPanel");
+
+    if (abnormal) {
+
+        if (warningPanel) {
+            warningPanel.classList.add("show");
+        }
+
+        if (normalPanel) {
+            normalPanel.style.display = "none";
+        }
+
+        setText(
+            "warningTitle",
+            "检测到坐姿异常：" + postureText(posture)
+        );
+
+        const elapsed = Number(data.alert_elapsed) || 0;
+        const remaining = Math.max(0, Number(data.alert_remaining) || 0);
+
+        if (data.alert) {
+
+            setText(
+                "warningDescription",
+                "异常姿势持续时间已达到提醒阈值，请调整坐姿。"
+            );
+
+            setText("warningCountdown", "已触发提醒");
+
+        } else {
+
+            setText(
+                "warningDescription",
+                "请及时调整坐姿，持续异常达到 5 秒将触发提醒。"
+            );
+
+            setText(
+                "warningCountdown",
+                "已持续 " + elapsed.toFixed(1) +
+                " 秒，距离提醒还有 " + remaining.toFixed(1) + " 秒"
+            );
+        }
+
+        return;
+    }
+
+    if (warningPanel) {
+        warningPanel.classList.remove("show");
+    }
+
+    if (normalPanel) {
+        normalPanel.style.display = "block";
+    }
+
+    if (!data.person_detected) {
+
+        setText(
+            "normalPanel",
+            "当前未检测到人员或关键点不清晰，" +
+            "请进入识别范围并保持上半身完整可见。"
+        );
+
+    } else if (
+        posture === "keypoints not clear" ||
+        posture === "unknown"
+    ) {
+
+        setText(
+            "normalPanel",
+            "暂时无法清晰识别坐姿，请调整摄像头范围或坐姿。"
+        );
+
+    } else if (posture === "wait calibration") {
+
+        setText(
+            "normalPanel",
+            "尚未建立正常坐姿基准，请保持正常坐姿并点击姿态校准。"
+        );
+
+    } else {
+
+        setText(
+            "normalPanel",
+            "当前坐姿状态正常，请继续保持。"
+        );
+    }
+}
+
+
+function updateSwitch(id, enabled) {
+
+    const element = getElement(id);
+
+    if (!element) return;
+
+    element.classList.toggle("on", enabled);
 }
 
 
@@ -423,10 +537,7 @@ async function refreshSummary() {
 
         const data = await requestJSON("/api/summary");
 
-        setText(
-            "totalSessions",
-            data.total_sessions ?? 0
-        );
+        setText("totalSessions", data.total_sessions ?? 0);
 
         setText(
             "totalMinutes",
@@ -462,7 +573,7 @@ async function refreshTodayStats() {
 
         setText(
             "todayReminders",
-            (data.today_reminders ?? 0) + " 次"
+            (data.today_reminders ?? 0) + " 次提醒"
         );
 
     } catch (error) {
@@ -473,10 +584,170 @@ async function refreshTodayStats() {
 
 
 // =====================================================
-// 最近七天趋势
+// 学习趋势图表
 // =====================================================
 
-async function refreshDailyStats() {
+let trendDays = 7;
+
+
+function niceMax(value, defaultValue) {
+
+    if (!value || value <= 0) return defaultValue;
+
+    const steps = [10, 20, 30, 60, 90, 120, 180, 240, 300, 360, 480, 600];
+
+    for (const step of steps) {
+        if (value <= step) return step;
+    }
+
+    return Math.ceil(value / 60) * 60;
+}
+
+
+function buildChart(records) {
+
+    const width = 640;
+    const height = 232;
+
+    const padLeft = 30;
+    const padRight = 42;
+    const padTop = 16;
+    const padBottom = 28;
+
+    const plotWidth = width - padLeft - padRight;
+    const plotHeight = height - padTop - padBottom;
+
+    const count = records.length;
+
+    const maxMinutes = niceMax(
+        Math.max(...records.map(item => Number(item.minutes) || 0)),
+        30
+    );
+
+    const maxReminders = niceMax(
+        Math.max(...records.map(item => Number(item.reminders) || 0)),
+        5
+    );
+
+    const x = index => count <= 1
+        ? padLeft + plotWidth / 2
+        : padLeft + index * plotWidth / (count - 1);
+
+    const yMinutes = value =>
+        padTop + plotHeight * (1 - value / maxMinutes);
+
+    const yReminders = value =>
+        padTop + plotHeight * (1 - value / maxReminders);
+
+    const formatDate = value => escapeHTML(String(value || "").slice(5));
+
+
+    // 横向网格与左右纵轴
+    let grid = "";
+    let leftAxis = "";
+    let rightAxis = "";
+
+    for (let i = 0; i <= 3; i += 1) {
+
+        const y = padTop + plotHeight * i / 3;
+
+        grid += `<line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="#eef3f8" stroke-width="1" />`;
+
+        leftAxis += `<text x="${padLeft - 8}" y="${y + 3}" text-anchor="end" font-size="9" fill="#9aa8b8">${Math.round(maxMinutes * (3 - i) / 3)}</text>`;
+
+        rightAxis += `<text x="${width - padRight + 8}" y="${y + 3}" font-size="9" fill="#9dbba9">${Math.round(maxReminders * (3 - i) / 3)}</text>`;
+    }
+
+
+    // 横轴日期标签
+    let xAxis = "";
+
+    const labelStep = Math.max(1, Math.ceil(count / 7));
+
+    records.forEach((item, index) => {
+
+        if (
+            index % labelStep !== 0 &&
+            index !== count - 1
+        ) {
+            return;
+        }
+
+        xAxis += `<text x="${x(index)}" y="${height - 8}" text-anchor="middle" font-size="9" fill="#9aa8b8">${formatDate(item.date)}</text>`;
+    });
+
+
+    // 折线数据
+    const minutePoints = records.map((item, index) => ({
+        x: x(index),
+        y: yMinutes(Number(item.minutes) || 0)
+    }));
+
+    const reminderPoints = records.map((item, index) => ({
+        x: x(index),
+        y: yReminders(Number(item.reminders) || 0)
+    }));
+
+    const toPolyline = points =>
+        points.map(point => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+
+    const areaPath =
+        `M ${minutePoints[0].x.toFixed(1)} ${padTop + plotHeight} ` +
+        minutePoints.map(point => `L ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ") +
+        ` L ${minutePoints[count - 1].x.toFixed(1)} ${padTop + plotHeight} Z`;
+
+    const showDots = count <= 14;
+
+    const dots = showDots
+        ? minutePoints.map((point, index) => (
+            `<circle cx="${point.x}" cy="${point.y}" r="3" fill="#ffffff" stroke="#6e9fd8" stroke-width="2"><title>${formatDate(records[index].date)}：${Number(records[index].minutes) || 0} 分钟</title></circle>`
+        )).join("") +
+        reminderPoints.map((point, index) => (
+            `<circle cx="${point.x}" cy="${point.y}" r="2.5" fill="#ffffff" stroke="#6fb795" stroke-width="2"><title>${formatDate(records[index].date)}：${Number(records[index].reminders) || 0} 次提醒</title></circle>`
+        )).join("")
+        : "";
+
+
+    return `
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="学习趋势图">
+            <defs></defs>
+
+            ${grid}
+
+            <path d="${areaPath}" fill="#6e9fd8" opacity="0.08"></path>
+
+            <polyline
+                points="${toPolyline(minutePoints)}"
+                fill="none"
+                stroke="#6e9fd8"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </polyline>
+
+            <polyline
+                points="${toPolyline(reminderPoints)}"
+                fill="none"
+                stroke="#6fb795"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </polyline>
+
+            ${dots}
+
+            ${leftAxis}
+            ${rightAxis}
+            ${xAxis}
+
+            <text x="${padLeft - 8}" y="${padTop - 5}" text-anchor="end" font-size="8" fill="#b0bdcb">分钟</text>
+            <text x="${width - padRight + 8}" y="${padTop - 5}" font-size="8" fill="#b0c8b9">次</text>
+        </svg>
+    `;
+}
+
+
+async function refreshDailyStats(days = trendDays) {
 
     const chart = getElement("dailyChart");
 
@@ -484,7 +755,9 @@ async function refreshDailyStats() {
 
     try {
 
-        const records = await requestJSON("/api/daily_stats");
+        const records = await requestJSON(
+            "/api/daily_stats?days=" + days
+        );
 
         if (!Array.isArray(records) || records.length === 0) {
 
@@ -494,108 +767,24 @@ async function refreshDailyStats() {
             return;
         }
 
-
-        const maxMinutes = Math.max(
-            ...records.map(item => Number(item.minutes) || 0),
-            1
-        );
-
-        // 纵轴刻度向上取整，便于阅读
-        const step = maxMinutes <= 10
-            ? 2
-            : (maxMinutes <= 30 ? 10 : 30);
-
-        const axisMax = Math.ceil(maxMinutes / step) * step;
-
-        const ticks = [axisMax, axisMax / 2, 0];
-
-        const axisLabels = ticks
-            .map(value => `<span>${value}</span>`)
-            .join("");
-
-        const gridLines = ticks
-            .map((_, index) => (
-                `<div class="chart-line" style="top:${index * 50}%"></div>`
-            ))
-            .join("");
+        chart.innerHTML = buildChart(records);
 
 
-        const bars = records.map(item => {
-
-            const minutes = Number(item.minutes) || 0;
-
-            const height = minutes > 0
-                ? Math.max(minutes / axisMax * 100, 3)
-                : 0;
-
-            const dateLabel = escapeHTML(
-                String(item.date || "").slice(5)
-            );
-
-            const fill = minutes > 0
-                ? `
-                    <div
-                        class="bar-fill"
-                        style="height:${height}%"
-                        title="${dateLabel}：${minutes} 分钟">
-                    </div>
-                `
-                : "";
-
-
-            return `
-                <div class="bar-item">
-
-                    <div class="bar-value">
-                        ${minutes}
-                    </div>
-
-                    <div class="bar-track">
-                        ${fill}
-                    </div>
-
-                    <div class="bar-date">
-                        ${dateLabel}
-                    </div>
-
-                </div>
-            `;
-
-        }).join("");
-
-
-        chart.innerHTML = `
-            <div class="chart-body">
-
-                <div class="chart-axis">
-                    ${axisLabels}
-                </div>
-
-                <div class="chart-plot">
-
-                    <div class="chart-grid">
-                        ${gridLines}
-                    </div>
-
-                    <div class="chart-bars">
-                        ${bars}
-                    </div>
-
-                </div>
-
-            </div>
-        `;
-
-
-        const total = records.reduce(
+        const totalMinutes = records.reduce(
             (sum, item) => sum + (Number(item.minutes) || 0),
             0
         );
 
+        const totalReminders = records.reduce(
+            (sum, item) => sum + (Number(item.reminders) || 0),
+            0
+        );
 
         setText(
             "chartTip",
-            "最近7天累计学习：" + total + " 分钟"
+            "近 " + days + " 天累计学习 " + totalMinutes +
+            " 分钟 · 坐姿提醒 " + totalReminders +
+            " 次 · 蓝线为学习时长，绿线为提醒次数"
         );
 
     } catch (error) {
@@ -606,6 +795,23 @@ async function refreshDailyStats() {
             '<div class="empty">学习趋势加载失败，请检查服务</div>';
     }
 }
+
+
+document.querySelectorAll("#trendTabs button").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        document.querySelectorAll("#trendTabs button").forEach(other => {
+            other.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        trendDays = Number(button.dataset.days) || 7;
+
+        refreshDailyStats(trendDays);
+    });
+});
 
 
 // =====================================================
@@ -677,40 +883,30 @@ async function timerControl(action) {
     };
 
 
-    showMessage(
-        messages[action] || "正在发送计时指令……"
-    );
+    showMessage(messages[action] || "正在发送计时指令……");
 
 
     try {
 
         const result = await requestJSON(
             "/api/timer/" + action,
-            {
-                method: "POST"
-            }
+            { method: "POST" }
         );
 
 
         if (!result.success) {
 
-            throw new Error(
-                result.message || "计时控制失败"
-            );
+            throw new Error(result.message || "计时控制失败");
         }
 
 
-        showMessage(
-            result.message || "计时指令已发送"
-        );
+        showMessage(result.message || "计时指令已发送");
 
         await refreshStatus();
 
     } catch (error) {
 
-        showMessage(
-            error.message || "计时控制失败"
-        );
+        showMessage(error.message || "计时控制失败");
     }
 }
 
@@ -723,46 +919,36 @@ async function postureControl(action) {
 
     const messages = {
 
-        calibrate: "正在发送姿态初始校准指令……",
+        calibrate: "正在发送姿态校准指令……",
 
         reset_calibration: "正在发送重新等待校准指令……"
     };
 
 
-    showMessage(
-        messages[action] || "正在发送姿态指令……"
-    );
+    showMessage(messages[action] || "正在发送姿态指令……");
 
 
     try {
 
         const result = await requestJSON(
             "/api/posture/" + action,
-            {
-                method: "POST"
-            }
+            { method: "POST" }
         );
 
 
         if (!result.success) {
 
-            throw new Error(
-                result.message || "姿态控制失败"
-            );
+            throw new Error(result.message || "姿态控制失败");
         }
 
 
-        showMessage(
-            result.message || "姿态指令已发送"
-        );
+        showMessage(result.message || "姿态指令已发送");
 
         await refreshStatus();
 
     } catch (error) {
 
-        showMessage(
-            error.message || "姿态控制失败"
-        );
+        showMessage(error.message || "姿态控制失败");
     }
 }
 
@@ -799,33 +985,35 @@ async function control(device, enabled) {
                     "Content-Type": "application/json"
                 },
 
-                body: JSON.stringify({
-                    enabled: enabled
-                })
+                body: JSON.stringify({ enabled: enabled })
             }
         );
 
 
         if (!result.success) {
 
-            throw new Error(
-                result.message || "设备控制失败"
-            );
+            throw new Error(result.message || "设备控制失败");
         }
 
 
-        showMessage(
-            result.message || "设备设置已更新"
-        );
+        showMessage(result.message || "设备设置已更新");
 
         await refreshStatus();
 
     } catch (error) {
 
-        showMessage(
-            error.message || "设备控制失败"
-        );
+        showMessage(error.message || "设备控制失败");
     }
+}
+
+
+function toggleLight() {
+    control("light", !lightEnabled);
+}
+
+
+function toggleBuzzer() {
+    control("buzzer", !buzzerEnabled);
 }
 
 
@@ -859,7 +1047,7 @@ function refreshAll() {
 
     refreshTodayStats();
 
-    refreshDailyStats();
+    refreshDailyStats(trendDays);
 
     refreshRecords();
 }
@@ -874,6 +1062,6 @@ setInterval(refreshSummary, 5000);
 
 setInterval(refreshTodayStats, 5000);
 
-setInterval(refreshDailyStats, 30000);
+setInterval(() => refreshDailyStats(trendDays), 30000);
 
 setInterval(refreshRecords, 10000);

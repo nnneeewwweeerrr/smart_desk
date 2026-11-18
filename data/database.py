@@ -124,7 +124,8 @@ class Database:
         cursor.execute("""
             SELECT
                 DATE(start_time) AS study_date,
-                COALESCE(SUM(study_minutes), 0) AS total_minutes
+                COALESCE(SUM(study_minutes), 0) AS total_minutes,
+                COALESCE(SUM(reminder_count), 0) AS total_reminders
             FROM study_records
             WHERE DATE(start_time) >= DATE('now', ?)
             GROUP BY DATE(start_time)
@@ -134,9 +135,9 @@ class Database:
         records = cursor.fetchall()
         conn.close()
 
-        # 整理为日期和时长的对应关系
+        # 整理为日期对应的学习时长和提醒次数
         stats_map = {
-            row[0]: row[1]
+            row[0]: (row[1], row[2])
             for row in records
         }
 
@@ -150,9 +151,12 @@ class Database:
             current_date = today - timedelta(days=i)
             date_str = current_date.strftime("%Y-%m-%d")
 
+            minutes, reminders = stats_map.get(date_str, (0, 0))
+
             result.append({
                 "date": date_str,
-                "minutes": stats_map.get(date_str, 0)
+                "minutes": minutes,
+                "reminders": reminders
             })
 
         return result
