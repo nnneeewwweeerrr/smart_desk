@@ -94,6 +94,11 @@ button {
     background: var(--primary);
 }
 
+.brand-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
 .brand-name {
     font-size: 19px;
     font-weight: 700;
@@ -148,9 +153,16 @@ button {
 
 .nav-icon {
     width: 22px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
     color: inherit;
+}
+
+.nav-icon svg {
+    width: 17px;
+    height: 17px;
 }
 
 .sidebar-bottom {
@@ -291,23 +303,14 @@ button {
     line-height: 1.8;
 }
 
-.hero-decoration {
+.hero-art {
     position: absolute;
-    right: 58px;
+    right: 40px;
     top: 50%;
-    width: 104px;
-    height: 104px;
-    border: 14px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
+    width: 235px;
+    height: auto;
     transform: translateY(-50%);
-}
-
-.hero-decoration::before {
-    content: "";
-    position: absolute;
-    inset: -30px;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 50%;
+    pointer-events: none;
 }
 
 /* =====================================================
@@ -342,6 +345,11 @@ button {
     background: var(--primary-light);
     color: var(--primary);
     font-size: 17px;
+}
+
+.stat-icon svg {
+    width: 19px;
+    height: 19px;
 }
 
 .stat-label {
@@ -384,6 +392,20 @@ button {
     color: #34495f;
     font-size: 15px;
     font-weight: 700;
+}
+
+.card-title > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.card-title > span:first-child::before {
+    content: "";
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    background: #b7cde3;
 }
 
 .card-title small {
@@ -722,9 +744,19 @@ button {
 }
 
 .device-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: #40556e;
     font-size: 13px;
     font-weight: 700;
+}
+
+.device-name svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: #7d97b3;
 }
 
 .device-desc {
@@ -889,6 +921,11 @@ tbody tr:last-child td {
     .bottom-grid {
         grid-template-columns: 1fr;
     }
+
+    .hero-art {
+        width: 190px;
+        right: 24px;
+    }
 }
 
 /* =====================================================
@@ -957,8 +994,11 @@ tbody tr:last-child td {
     }
 
     .hero-decoration {
-        right: -22px;
-        opacity: 0.6;
+        display: none;
+    }
+
+    .hero-art {
+        display: none;
     }
 
     .stats-grid {
