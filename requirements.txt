@@ -1,0 +1,13 @@
+# 智学灯运行依赖（PC 端）
+# 安装：pip install -r requirements.txt
+
+Flask==3.1.3
+mediapipe==0.10.21
+numpy==1.26.4
+opencv-contrib-python==4.10.0.84
+
+# 说明：
+# 1. mediapipe 已包含 flask 之外的计算依赖（protobuf、flatbuffers 等），
+#    会由 pip 自动安装，无需在此逐个列出。
+# 2. 树莓派（ARM）上 mediapipe 的可用版本与 PC 不同，
+#    部署时应按树莓派系统实际支持的版本安装，不要直接照搬本文件。
