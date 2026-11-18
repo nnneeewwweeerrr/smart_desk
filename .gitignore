@@ -1,0 +1,13 @@
+# Python 虚拟环境
+.venv/
+.venv_mp_test/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 日志与临时文件
+*.log
+*.tmp

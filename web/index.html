@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智学灯 · 智能学习控制中心</title>
+
+    <!-- 页面样式 -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div>
+                <div class="brand-name">智学灯</div>
+                <div class="brand-sub">SMART DESK SYSTEM</div>
+            </div>
+        </div>
+
+        <div class="nav-caption">工作空间</div>
+
+        <nav class="nav-list">
+            <a class="nav-item active" href="#overview">
+                <span class="nav-icon">▦</span>
+                总览中心
+            </a>
+
+            <a class="nav-item" href="#monitor">
+                <span class="nav-icon">◉</span>
+                姿态监测
+            </a>
+
+            <a class="nav-item" href="#trend">
+                <span class="nav-icon">▥</span>
+                学习趋势
+            </a>
+
+            <a class="nav-item" href="#devices">
+                <span class="nav-icon">⌘</span>
+                设备控制
+            </a>
+
+            <a class="nav-item" href="#records">
+                <span class="nav-icon">▤</span>
+                历史记录
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="mini-device">
+                <div class="mini-device-title">✧ 智能学习助手</div>
+                <div class="mini-device-desc">
+                    专注学习，科学坐姿。<br>
+                    让每一次学习都更高效。
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- 主页面 -->
+    <main class="main-content">
+
+        <!-- 顶部 -->
+        <header class="topbar" id="overview">
+
+            <div>
+                <div class="page-title">学习控制中心</div>
+                <div class="page-subtitle">
+                    欢迎使用智学灯 · 智能学习状态实时管理平台
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-pill" id="currentDate">
+                    学习数据中心
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    智能管理系统
+                </div>
+            </div>
+
+        </header>
+
+        <!-- 欢迎横幅 -->
+        <section class="hero">
+
+            <div class="hero-content">
+                <div class="hero-label">
+                    SMART LEARNING EXPERIENCE
+                </div>
+
+                <div class="hero-title">
+                    让专注成为一种习惯
+                </div>
+
+                <div class="hero-desc">
+                    智能感知 · 科学提醒 · 高效学习
+                </div>
+            </div>
+
+            <div class="hero-decoration">☼</div>
+
+        </section>
+
+        <!-- 累计数据 -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">累计学习次数</div>
+                <div class="stat-value" id="totalSessions">0</div>
+                <div class="stat-icon">▤</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">累计学习时间</div>
+                <div class="stat-value" id="totalMinutes">0 分钟</div>
+                <div class="stat-icon">◷</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">累计坐姿提醒</div>
+                <div class="stat-value" id="totalReminders">0</div>
+                <div class="stat-icon">♧</div>
+            </div>
+
+        </section>
+
+        <!-- 实时监测区域 -->
+        <section class="monitor-layout" id="monitor">
+
+            <!-- 摄像头 -->
+            <div class="card video-card">
+
+                <div class="card-title">
+                    <span>实时视觉监测</span>
+                    <span class="live-tag" id="cameraIndicator">
+                        ● 等待连接
+                    </span>
+                </div>
+
+                <div class="video-container">
+
+                    <div class="video-overlay">
+                        LIVE · 姿态识别画面
+                    </div>
+
+                    <img
+                        id="cameraFeed"
+                        class="video-image"
+                        src="/video_feed"
+                        alt="等待摄像头画面"
+                    >
+
+                </div>
+
+                <div class="video-tip" id="videoMessage">
+                    正在等待摄像头连接……
+                </div>
+
+            </div>
+
+            <!-- 右侧状态 -->
+            <div class="monitor-side">
+
+                <div class="monitor-card">
+                    <div class="monitor-label">当前人员状态</div>
+                    <div class="monitor-value" id="personStatus">
+                        等待检测
+                    </div>
+                    <div class="monitor-note">
+                        基于摄像头实时感知
+                    </div>
+                </div>
+
+                <div class="monitor-card">
+                    <div class="monitor-label">当前坐姿状态</div>
+                    <div class="monitor-value" id="posture">
+                        加载中
+                    </div>
+                    <div class="monitor-note">
+                        上半身姿态智能分析
+                    </div>
+                </div>
+
+                <div class="monitor-two">
+
+                    <div class="monitor-card">
+                        <div class="monitor-label">学习状态</div>
+                        <div class="monitor-value" id="studyStatus">
+                            空闲
+                        </div>
+                    </div>
+
+                    <div class="monitor-card">
+                        <div class="monitor-label">阶段剩余时间</div>
+                        <div class="monitor-value" id="studyCountdown">
+                            00:00
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="monitor-two">
+
+                    <div class="monitor-card">
+                        <div class="monitor-label">本次学习时长</div>
+                        <div class="monitor-value" id="studyTime">
+                            0 分钟
+                        </div>
+                    </div>
+
+                    <div class="monitor-card">
+                        <div class="monitor-label">本次提醒次数</div>
+                        <div class="monitor-value" id="reminders">
+                            0 次
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="normalPanel" class="normal-panel">
+                    当前坐姿状态正常，请继续保持。
+                </div>
+
+                <div id="warningPanel" class="warning-panel">
+
+                    <div class="warning-title" id="warningTitle">
+                        检测到坐姿异常
+                    </div>
+
+                    <div class="warning-description" id="warningDescription">
+                        请及时调整坐姿。
+                    </div>
+
+                    <div class="warning-countdown" id="warningCountdown">
+                        5.0 秒
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- 今日数据、趋势和设备控制 -->
+        <section class="bottom-grid">
+
+            <!-- 左侧：今日数据 + 趋势 -->
+            <div class="left-bottom-column">
+
+                <div class="card">
+
+                    <div class="card-title">
+                        <span>今日学习数据</span>
+                        <small>今日实时统计</small>
+                    </div>
+
+                    <div class="today-grid">
+
+                        <div class="today-item">
+                            <div class="today-label">
+                                今日累计学习时长
+                            </div>
+                            <div class="today-value" id="todayStudy">
+                                0 分钟
+                            </div>
+                        </div>
+
+                        <div class="today-item">
+                            <div class="today-label">
+                                今日坐姿提醒次数
+                            </div>
+                            <div class="today-value" id="todayReminders">
+                                0 次
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card" id="trend">
+
+                    <div class="card-title">
+                        <span>最近 7 天学习趋势</span>
+                        <small>WEEKLY ANALYSIS</small>
+                    </div>
+
+                    <div class="chart" id="dailyChart">
+                        <div class="empty">正在加载学习趋势……</div>
+                    </div>
+
+                    <div class="chart-tip" id="chartTip">
+                        数据来源：本地 SQLite 学习记录
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 右侧：设备控制 -->
+            <div class="card" id="devices">
+
+                <div class="card-title">
+                    <span>智能设备控制</span>
+                    <small>DEVICE CONTROL</small>
+                </div>
+
+                <!-- 学习计时控制 -->
+                <div class="device-row device-block">
+
+                    <div class="device-heading">
+                        <div class="device-name">◷ 学习计时控制</div>
+                        <div class="device-desc">
+                            25 分钟专注学习 · 5 分钟休息
+                        </div>
+                    </div>
+
+                    <div class="button-group button-wrap">
+                        <button onclick="timerControl('start')">
+                            开始 / 继续
+                        </button>
+
+                        <button class="off" onclick="timerControl('pause')">
+                            暂停
+                        </button>
+
+                        <button class="off" onclick="timerControl('reset')">
+                            重置
+                        </button>
+                    </div>
+
+                    <div class="device-desc device-status">
+                        当前状态：
+                        <span id="timerControlStatus">空闲</span>
+
+                        <span class="timer-remaining">
+                            剩余时间：
+                            <span id="timerControlCountdown">00:00</span>
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- 姿态校准控制 -->
+                <div class="device-row device-block">
+
+                    <div class="device-heading">
+                        <div class="device-name">◎ 姿态校准控制</div>
+                        <div class="device-desc">
+                            首次使用或坐姿变化后，可重新校准正常坐姿
+                        </div>
+                    </div>
+
+                    <div class="button-group button-wrap">
+                        <button onclick="postureControl('calibrate')">
+                            姿态初始校准
+                        </button>
+
+                        <button
+                            class="off"
+                            onclick="postureControl('reset_calibration')">
+                            重新等待校准
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- 台灯控制 -->
+                <div class="device-row">
+
+                    <div>
+                        <div class="device-name">☼ 智能台灯</div>
+                        <div class="device-desc">
+                            控制台灯开关状态
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button onclick="control('light', true)">
+                            开启
+                        </button>
+
+                        <button class="off" onclick="control('light', false)">
+                            关闭
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- 蜂鸣器控制 -->
+                <div class="device-row">
+
+                    <div>
+                        <div class="device-name">♧ 蜂鸣提醒</div>
+                        <div class="device-desc">
+                            控制坐姿异常声音提醒
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button onclick="control('buzzer', true)">
+                            开启
+                        </button>
+
+                        <button class="off" onclick="control('buzzer', false)">
+                            关闭
+                        </button>
+                    </div>
+
+                </div>
+
+                <div id="message">等待设备连接……</div>
+
+            </div>
+
+        </section>
+
+        <!-- 历史记录 -->
+        <section class="card" id="records">
+
+            <div class="card-title">
+                <span>学习历史记录</span>
+                <small>STUDY HISTORY</small>
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>学习时长</th>
+                            <th>提醒次数</th>
+                            <th>最后坐姿</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="recordTable">
+                        <tr>
+                            <td colspan="6" class="empty">
+                                正在加载学习记录……
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- 页面底部 -->
+        <footer class="footer">
+            SMART DESK · INTELLIGENT LEARNING SYSTEM
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- 页面交互逻辑 -->
+<script src="/js/app.js"></script>
+
+</body>
+</html>
