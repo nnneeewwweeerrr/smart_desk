@@ -11,104 +11,227 @@
 
 <body>
 
+<!-- ================= 卡通小图（内联符号） ================= -->
+
+<svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+    <symbol id="ic-lamp" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="24" cy="42.5" rx="12" ry="2.6" fill="#dbe6f3"></ellipse>
+        <rect x="17.5" y="38" width="13" height="3" rx="1.5" fill="#7ba5d6"></rect>
+        <rect x="23" y="21" width="2" height="18" rx="1" fill="#a8c6e8"></rect>
+        <path d="M14 21h20l-4.2-12H18.2z" fill="#8fb6e3"></path>
+        <path d="M15.6 18.6h16.8l.9 2.4H14.7z" fill="#6f9ccf"></path>
+        <circle cx="24" cy="27" r="5" fill="#ffe6a7" opacity="0.9"></circle>
+        <path d="M19.4 22.5h9.2l.7 2H18.7z" fill="#c7dcf2"></path>
+    </symbol>
+
+    <symbol id="ic-book" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="24" cy="41.5" rx="14" ry="2.6" fill="#dceee5"></ellipse>
+        <path d="M8 14c5.5-3 11-3 16 1v22c-5-4-10.5-4-16-1z" fill="#8fceb0"></path>
+        <path d="M40 14c-5.5-3-11-3-16 1v22c5-4 10.5-4 16-1z" fill="#a9dcc3"></path>
+        <path d="M24 15v22" stroke="#7bb89b" stroke-width="1.6"></path>
+        <path d="M12 19.5c3-.8 6-.4 9 1M12 24.5c3-.8 6-.4 9 1M27 20.5c3-1.4 6-1.8 9-1M27 25.5c3-1.4 6-1.8 9-1"
+              stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" fill="none"></path>
+    </symbol>
+
+    <symbol id="ic-clock" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="24" cy="42" rx="10" ry="2.4" fill="#dce8f6"></ellipse>
+        <circle cx="17.5" cy="13" r="3.2" fill="#8fb6e3"></circle>
+        <circle cx="30.5" cy="13" r="3.2" fill="#8fb6e3"></circle>
+        <circle cx="24" cy="24.5" r="15" fill="#a9c8ea"></circle>
+        <circle cx="24" cy="24.5" r="11.4" fill="#ffffff"></circle>
+        <path d="M24 17.5v7.5l5 3" stroke="#4f7196" stroke-width="2.1" stroke-linecap="round" fill="none"></path>
+        <circle cx="24" cy="24.5" r="1.6" fill="#4f7196"></circle>
+    </symbol>
+
+    <symbol id="ic-mug" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="22" cy="42" rx="13" ry="2.6" fill="#f6e3d2"></ellipse>
+        <path d="M31 21h3a5.2 5.2 0 0 1 0 10.4h-3" fill="none" stroke="#e2a273" stroke-width="3"></path>
+        <path d="M11 18h20v14.5A6.5 6.5 0 0 1 24.5 39h-7A6.5 6.5 0 0 1 11 32.5z" fill="#f3b78a"></path>
+        <path d="M11 18h20v4.4H11z" fill="#ffd2b0"></path>
+        <path d="M18 13.5c0-2 2-2 2-4.5M24 13.5c0-2 2-2 2-4.5"
+              stroke="#e8c7ae" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
+    </symbol>
+
+    <symbol id="ic-person" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="24" cy="42.5" rx="14" ry="2.5" fill="#dceee8"></ellipse>
+        <path d="M14 20a10 10 0 0 1 20 0v9H14z" fill="#8fceb0"></path>
+        <circle cx="24" cy="13.5" r="6.2" fill="#f7d3b5"></circle>
+        <path d="M17.8 12.6c0-4 2.8-6.4 6.2-6.4s6.2 2.4 6.2 6.4c-2-1.6-4-2.4-6.2-2.4s-4.2.8-6.2 2.4z" fill="#5f7d8f"></path>
+        <circle cx="21.5" cy="14.2" r="1" fill="#3f5666"></circle>
+        <circle cx="26.5" cy="14.2" r="1" fill="#3f5666"></circle>
+        <path d="M9 31.5h27.5l-1.5 4H10.5z" fill="#c9a37e"></path>
+        <rect x="12" y="35.5" width="3.6" height="7" rx="1.4" fill="#b08b68"></rect>
+        <rect x="30.4" y="35.5" width="3.6" height="7" rx="1.4" fill="#b08b68"></rect>
+        <path d="M15 28.5h6v3H15z" fill="#eaf3fd"></path>
+    </symbol>
+
+    <symbol id="ic-camera" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <rect x="6" y="15.5" width="36" height="24" rx="7" fill="#8fb6e3"></rect>
+        <path d="M17 15.5l2.2-4h9.6l2.2 4z" fill="#6f9ccf"></path>
+        <circle cx="24" cy="27.5" r="8.2" fill="#eaf3fd"></circle>
+        <circle cx="24" cy="27.5" r="5" fill="#5b83ad"></circle>
+        <circle cx="21.6" cy="25" r="1.5" fill="#ffffff" opacity="0.85"></circle>
+        <circle cx="36.2" cy="20.8" r="1.8" fill="#ffe6a7"></circle>
+    </symbol>
+
+    <symbol id="ic-chart" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <rect x="6" y="8" width="36" height="30" rx="6" fill="#eaf3fd"></rect>
+        <rect x="11" y="26" width="6" height="8" rx="2" fill="#a9c8ea"></rect>
+        <rect x="20" y="20" width="6" height="14" rx="2" fill="#8fb6e3"></rect>
+        <rect x="29" y="14" width="6" height="20" rx="2" fill="#6f9ccf"></rect>
+        <path d="M10 39.5h28" stroke="#cfe0f1" stroke-width="2" stroke-linecap="round"></path>
+    </symbol>
+
+    <symbol id="ic-bell" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <path d="M24 8.5c-5.8 0-9.6 4.4-9.6 10.2v6.6L11 31.6h26l-3.4-6.3v-6.6c0-5.8-3.8-10.2-9.6-10.2z" fill="#c2b0e6"></path>
+        <path d="M24 8.5c5.8 0 9.6 4.4 9.6 10.2v6.6l3.4 6.3H24z" fill="#a996d8"></path>
+        <circle cx="24" cy="34.4" r="3" fill="#8d78c7"></circle>
+        <rect x="20.4" y="5.4" width="7.2" height="3" rx="1.5" fill="#a996d8"></rect>
+    </symbol>
+
+    <symbol id="ic-screen" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <rect x="7" y="10" width="34" height="24" rx="5" fill="#8fb6e3"></rect>
+        <rect x="11" y="14" width="26" height="16" rx="3" fill="#eaf3fd"></rect>
+        <path d="M16.5 19h10M16.5 23h14" stroke="#9dbede" stroke-width="2" stroke-linecap="round"></path>
+        <path d="M24 34v5M17 41h14" stroke="#6f9ccf" stroke-width="3" stroke-linecap="round"></path>
+    </symbol>
+
+    <symbol id="ic-gear" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <g fill="#a9c8ea">
+            <circle cx="24" cy="24" r="11"></circle>
+            <rect x="21" y="6" width="6" height="9" rx="2"></rect>
+            <rect x="21" y="33" width="6" height="9" rx="2"></rect>
+            <rect x="6" y="21" width="9" height="6" rx="2"></rect>
+            <rect x="33" y="21" width="9" height="6" rx="2"></rect>
+            <rect x="10" y="10" width="6" height="9" rx="2" transform="rotate(-45 13 14.5)"></rect>
+            <rect x="32" y="10" width="6" height="9" rx="2" transform="rotate(45 35 14.5)"></rect>
+            <rect x="10" y="29" width="6" height="9" rx="2" transform="rotate(45 13 33.5)"></rect>
+            <rect x="32" y="29" width="6" height="9" rx="2" transform="rotate(-45 35 33.5)"></rect>
+        </g>
+        <circle cx="24" cy="24" r="4.6" fill="#ffffff"></circle>
+    </symbol>
+
+    <symbol id="ic-info" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <circle cx="24" cy="24" r="16" fill="#a9c8ea"></circle>
+        <circle cx="24" cy="15.6" r="2.3" fill="#ffffff"></circle>
+        <rect x="21.6" y="20" width="4.8" height="13" rx="2.4" fill="#ffffff"></rect>
+    </symbol>
+
+    <symbol id="ic-bolt" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <path d="M27.5 5L12 27h9l-3 16 16.5-23h-9z" fill="#ffd479"></path>
+        <path d="M27.5 5L20 17h7.5z" fill="#ffe9b0"></path>
+    </symbol>
+
+    <symbol id="ic-home" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <path d="M9 23L24 10l15 13v15a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4z" fill="#eaf3fd"></path>
+        <path d="M6 23L24 8l18 15" fill="none" stroke="#8fb6e3" stroke-width="4"
+              stroke-linecap="round" stroke-linejoin="round"></path>
+        <rect x="19" y="28" width="10" height="14" rx="2" fill="#8fb6e3"></rect>
+        <circle cx="27" cy="35" r="1" fill="#ffffff"></circle>
+    </symbol>
+
+    <symbol id="ic-notebook" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <rect x="10" y="8" width="28" height="32" rx="5" fill="#a9c8ea"></rect>
+        <rect x="14" y="12" width="20" height="24" rx="3" fill="#ffffff"></rect>
+        <path d="M19 18h10M19 23h10M19 28h6" stroke="#bfd4e8" stroke-width="2" stroke-linecap="round"></path>
+        <rect x="10" y="14" width="3" height="6" rx="1.5" fill="#6f9ccf"></rect>
+        <rect x="10" y="24" width="3" height="6" rx="1.5" fill="#6f9ccf"></rect>
+    </symbol>
+
+    <symbol id="ic-plant" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <ellipse cx="24" cy="43" rx="14" ry="2.4" fill="#e6f0e9"></ellipse>
+        <path d="M17 33h14l-2 8.5H19z" fill="#d9b18c"></path>
+        <rect x="15" y="30" width="18" height="5" rx="2.5" fill="#c9a37e"></rect>
+        <path d="M24 30c0-8.5-5-12.5-10.5-13.5C19.5 15.5 24 20.5 24 30z" fill="#8fceb0"></path>
+        <path d="M24 30c0-9.5 5-13.5 10.5-14.5C28.5 14.5 24 19.5 24 30z" fill="#a9dcc3"></path>
+        <path d="M24 30c-2.2-6.2-1.2-9.4 0-11.6 1.2 2.2 2.2 5.4 0 11.6z" fill="#6fb795"></path>
+    </symbol>
+
+    <symbol id="ic-avatar" viewBox="0 0 48 48" stroke="#6b7f93" stroke-opacity="0.32" stroke-width="0.8">
+        <circle cx="24" cy="24" r="19" fill="#dbe9f8"></circle>
+        <path d="M13 37c2.8-4.4 6.6-6.6 11-6.6s8.2 2.2 11 6.6z" fill="#8fb6e3"></path>
+        <path d="M24 11.5c6.2 0 9.4 4 9.4 9.4 0 6.4-4.2 11.4-9.4 11.4s-9.4-5-9.4-11.4c0-5.4 3.2-9.4 9.4-9.4z" fill="#f7d3b5"></path>
+        <path d="M14.6 20.9c0-6.2 4.2-9.4 9.4-9.4s9.4 3.2 9.4 9.4c-3.2-2.2-6.2-3.2-9.4-3.2s-6.2 1-9.4 3.2z" fill="#5f7d8f"></path>
+        <circle cx="20.6" cy="23.4" r="1.3" fill="#3f5666"></circle>
+        <circle cx="27.4" cy="23.4" r="1.3" fill="#3f5666"></circle>
+        <path d="M22 27.4c1 1.1 3 1.1 4 0" stroke="#c98f6f" stroke-width="1.4"
+              stroke-linecap="round" fill="none"></path>
+    </symbol>
+
+</svg>
+
 <div class="app-layout">
 
-    <!-- =================================================
-         左侧导航
-         ================================================= -->
+    <!-- ================= 侧边栏 ================= -->
 
     <aside class="sidebar">
 
         <div class="brand">
-            <div class="brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M8.5 3h7l4.5 7.5H4L8.5 3z"></path>
-                    <path d="M12 10.5V18"></path>
-                    <path d="M8 21h8"></path>
-                    <path d="M12 18v3"></path>
-                </svg>
-            </div>
+
+            <svg class="brand-img cartoon-svg" aria-hidden="true">
+                <use href="#ic-lamp"></use>
+            </svg>
+
             <div>
                 <div class="brand-name">智学灯</div>
                 <div class="brand-sub">智能学习助手</div>
             </div>
+
         </div>
 
         <nav class="nav-list">
 
             <a class="nav-item active" href="#overview">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 10.5 12 4l8 6.5"></path>
-                    <path d="M6 9.5V20h12V9.5"></path>
-                    <path d="M10 20v-6h4v6"></path>
+                <svg class="nav-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-home"></use>
                 </svg>
                 首页
             </a>
 
             <a class="nav-item" href="#trend">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 20V11"></path>
-                    <path d="M10 20V5"></path>
-                    <path d="M16 20v-7"></path>
-                    <path d="M21 20H3"></path>
+                <svg class="nav-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-chart"></use>
                 </svg>
                 数据统计
             </a>
 
             <a class="nav-item" href="#records">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="8"></circle>
-                    <path d="M12 7.5V12l3 2"></path>
+                <svg class="nav-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-notebook"></use>
                 </svg>
                 历史记录
             </a>
 
             <a class="nav-item" href="#devices">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.14.6.65 1 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"></path>
+                <svg class="nav-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-gear"></use>
                 </svg>
                 设备控制
             </a>
 
             <a class="nav-item" href="#systemInfo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="8.5"></circle>
-                    <path d="M12 11v5"></path>
-                    <path d="M12 8v.01"></path>
+                <svg class="nav-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-info"></use>
                 </svg>
-                系统信息
+                系统设置
             </a>
 
         </nav>
 
         <div class="sidebar-art" aria-hidden="true">
-            <svg viewBox="0 0 150 160" fill="none">
-                <rect x="30" y="112" width="78" height="16" rx="6" fill="#D8E7F3"></rect>
-                <rect x="36" y="98" width="66" height="16" rx="6" fill="#C7DDEE"></rect>
-                <rect x="42" y="84" width="54" height="16" rx="6" fill="#E4EFF8"></rect>
-
-                <path d="M75 84c0-18 4-30 14-40" stroke="#9BBFAE" stroke-width="2.2" stroke-linecap="round"></path>
-                <path d="M75 84C73 66 68 56 58 48" stroke="#9BBFAE" stroke-width="2.2" stroke-linecap="round"></path>
-
-                <path d="M89 44c10-6 18-2 18 6-9 3-16 1-18-6z" fill="#BFDCCB"></path>
-                <path d="M78 34c-4-10 2-17 9-14 2 8-1 13-9 14z" fill="#CFE6D8"></path>
-                <path d="M58 48c-9-3-11-12-5-16 6 4 8 10 5 16z" fill="#B7D8C6"></path>
-
-                <path d="M58 84h34l-5 36H63l-5-36z" fill="#E8D9C8"></path>
-                <path d="M55 84h40" stroke="#D8C4AE" stroke-width="2.4" stroke-linecap="round"></path>
+            <svg class="sidebar-img cartoon-svg">
+                <use href="#ic-plant"></use>
             </svg>
         </div>
 
     </aside>
 
-    <!-- =================================================
-         主内容
-         ================================================= -->
+    <!-- ================= 主内容 ================= -->
 
     <main class="main-content" id="overview">
 
-        <!-- 顶部状态栏 -->
+        <!-- 顶部栏 -->
         <header class="topbar">
 
             <div class="topbar-right">
@@ -118,6 +241,8 @@
                     系统运行中
                 </div>
 
+                <span class="topbar-divider"></span>
+
                 <div class="clock">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="8.5"></circle>
@@ -126,84 +251,85 @@
                     <span id="liveClock">--</span>
                 </div>
 
-                <div class="avatar" aria-hidden="true">学</div>
+                <div class="avatar" aria-hidden="true">
+                    <svg class="avatar-img cartoon-svg">
+                        <use href="#ic-avatar"></use>
+                    </svg>
+                </div>
 
             </div>
 
         </header>
 
-        <!-- 顶部状态卡片 -->
+        <!-- 统计卡片 -->
         <section class="stats-grid">
 
             <div class="stat-card stat-mint">
-                <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2.5 9.5 12 5l9.5 4.5L12 14 2.5 9.5z"></path>
-                        <path d="M6.5 11.5V17c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5.5"></path>
-                    </svg>
-                </div>
+
+                <svg class="stat-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-book"></use>
+                </svg>
+
                 <div class="stat-content">
                     <div class="stat-label">学习状态</div>
                     <div class="stat-value" id="studyStateText">
                         <i class="dot" id="studyStateDot"></i>等待开始
                     </div>
                 </div>
+
             </div>
 
             <div class="stat-card stat-blue">
-                <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="8.5"></circle>
-                        <path d="M12 7.5V12l3 2"></path>
-                    </svg>
-                </div>
+
+                <svg class="stat-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-clock"></use>
+                </svg>
+
                 <div class="stat-content">
                     <div class="stat-label">学习时长</div>
                     <div class="stat-value" id="statStudyMinutes">0 分钟</div>
                 </div>
+
                 <svg class="stat-spark" viewBox="0 0 64 34" fill="none" aria-hidden="true">
-                    <rect x="4" y="20" width="7" height="10" rx="2" fill="#C3D8EE"></rect>
-                    <rect x="16" y="14" width="7" height="16" rx="2" fill="#B3CDE8"></rect>
-                    <rect x="28" y="8" width="7" height="22" rx="2" fill="#9DBEDF"></rect>
-                    <rect x="40" y="17" width="7" height="13" rx="2" fill="#C3D8EE"></rect>
+                    <rect x="6" y="20" width="9" height="10" rx="2" fill="#c9dcf0"></rect>
+                    <rect x="20" y="13" width="9" height="17" rx="2" fill="#b6cfe8"></rect>
+                    <rect x="34" y="6" width="9" height="24" rx="2" fill="#9dbede"></rect>
+                    <rect x="48" y="17" width="9" height="13" rx="2" fill="#c9dcf0"></rect>
                 </svg>
+
             </div>
 
             <div class="stat-card stat-peach">
-                <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9z"></path>
-                        <path d="M16 10h2.5a2.5 2.5 0 0 1 0 5H16"></path>
-                        <path d="M7 5.5c0-.8 1-1.2 1-2"></path>
-                        <path d="M11 5.5c0-.8 1-1.2 1-2"></path>
-                    </svg>
-                </div>
+
+                <svg class="stat-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-mug"></use>
+                </svg>
+
                 <div class="stat-content">
                     <div class="stat-label">休息时间</div>
                     <div class="stat-value" id="restDuration">5 分钟</div>
                 </div>
+
             </div>
 
             <div class="stat-card stat-teal">
-                <div class="stat-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="6.5" r="3"></circle>
-                        <path d="M12 9.5V16h5"></path>
-                        <path d="M12 12l-4 1"></path>
-                        <path d="M12 16l-2 5"></path>
-                        <path d="M17 16l3 5"></path>
-                    </svg>
-                </div>
+
+                <svg class="stat-img cartoon-svg" aria-hidden="true">
+                    <use href="#ic-person"></use>
+                </svg>
+
                 <div class="stat-content">
                     <div class="stat-label">姿势状态</div>
                     <div class="stat-value posture-value" id="statPostureText">等待识别</div>
                 </div>
-                <span class="stat-check" id="postureCheck">✓</span>
+
+                <span class="stat-check idle" id="postureCheck">?</span>
+
             </div>
 
         </section>
 
-        <!-- 主区域 -->
+        <!-- 仪表盘 -->
         <div class="dashboard-grid">
 
             <div class="main-column">
@@ -212,25 +338,25 @@
                 <section class="card monitor-card" id="monitor">
 
                     <div class="card-head">
+
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"></path>
-                                <circle cx="12" cy="12" r="2.6"></circle>
-                            </svg>
-                            实时姿势监测
-                            <span class="detect-state" id="cameraIndicator">
-                                ● 检测中...
+                            <span class="title-icon">
+                                <svg class="title-img cartoon-svg" aria-hidden="true">
+                                    <use href="#ic-camera"></use>
+                                </svg>
                             </span>
+                            实时姿势监测
+                            <span class="detect-state" id="cameraIndicator">● 检测中...</span>
                         </div>
 
                         <button class="pill-btn pill-green" onclick="postureControl('calibrate')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="8"></circle>
-                                <circle cx="12" cy="12" r="2.4"></circle>
-                                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.14.6.65 1 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"></path>
                             </svg>
                             姿态校准
                         </button>
+
                     </div>
 
                     <div class="monitor-body">
@@ -242,33 +368,27 @@
                                 src="/video_feed"
                                 alt="等待摄像头画面"
                             >
-                            <span class="video-overlay">LIVE · 姿态识别画面</span>
+                            <div class="video-message" id="videoMessage"></div>
                         </div>
 
                         <div class="posture-side">
 
-                            <div class="ring" id="postureRingBox">
-                                <svg viewBox="0 0 120 120">
-                                    <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
-                                    <circle class="ring-progress" id="postureRing" cx="60" cy="60" r="52"></circle>
+                            <div class="timer-ring idle" id="postureRingBox">
+                                <svg viewBox="0 0 150 150">
+                                    <circle class="ring-bg" cx="75" cy="75" r="63"></circle>
+                                    <circle class="ring-progress" id="postureRing" cx="75" cy="75" r="63"></circle>
                                 </svg>
 
-                                <div class="ring-icon">
-                                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="23" cy="12" r="4.5"></circle>
-                                        <path d="M23 17v10h9"></path>
-                                        <path d="M23 22l-7 1"></path>
-                                        <path d="M23 27l-4 9"></path>
-                                        <path d="M32 27l6 9"></path>
-                                    </svg>
-                                    <span class="ring-check" id="ringCheck">✓</span>
+                                <div class="ring-center">
+                                    <div class="ring-time" id="ringTimer">25:00</div>
+                                    <div class="ring-caption">剩余时间</div>
                                 </div>
                             </div>
 
-                            <div class="ring-text" id="ringPostureText">等待识别</div>
+                            <div class="ring-text" id="ringPostureText">等待姿态校准</div>
 
-                            <button class="pill-btn pill-soft" onclick="postureControl('reset_calibration')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <button class="pill-btn pill-purple" onclick="postureControl('reset_calibration')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20 11a8 8 0 1 0-2.3 6"></path>
                                     <path d="M20 5v6h-6"></path>
                                 </svg>
@@ -279,28 +399,16 @@
 
                     </div>
 
-                    <div id="normalPanel" class="normal-panel">
-                        当前坐姿状态正常，请继续保持。
-                    </div>
-
                     <div id="warningPanel" class="warning-panel">
 
-                        <div class="warning-title" id="warningTitle">
-                            检测到坐姿异常
-                        </div>
+                        <div class="warning-title" id="warningTitle">检测到坐姿异常</div>
 
                         <div class="warning-description" id="warningDescription">
                             请及时调整坐姿。
                         </div>
 
-                        <div class="warning-countdown" id="warningCountdown">
-                            5.0 秒
-                        </div>
+                        <div class="warning-countdown" id="warningCountdown">5.0 秒</div>
 
-                    </div>
-
-                    <div class="video-tip" id="videoMessage">
-                        正在等待摄像头连接……
                     </div>
 
                 </section>
@@ -309,29 +417,26 @@
                 <section class="card chart-card" id="trend">
 
                     <div class="card-head">
+
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 20V11"></path>
-                                <path d="M10 20V5"></path>
-                                <path d="M16 20v-7"></path>
-                                <path d="M21 20H3"></path>
-                            </svg>
+                            <span class="title-icon">
+                                <svg class="title-img cartoon-svg" aria-hidden="true">
+                                    <use href="#ic-chart"></use>
+                                </svg>
+                            </span>
                             学习数据统计
                         </div>
 
                         <div class="segmented" id="trendTabs">
-                            <button class="active" data-days="7">近7天</button>
-                            <button data-days="30">近30天</button>
-                            <button data-days="90">近90天</button>
+                            <button class="active" data-range="today">今日</button>
+                            <button data-range="week">本周</button>
+                            <button data-range="month">本月</button>
                         </div>
+
                     </div>
 
                     <div class="chart" id="dailyChart">
                         <div class="empty">正在加载学习趋势……</div>
-                    </div>
-
-                    <div class="chart-tip" id="chartTip">
-                        数据来源：本地 SQLite 学习记录 · 蓝线为学习时长，绿线为提醒次数
                     </div>
 
                 </section>
@@ -345,108 +450,71 @@
 
                     <div class="card-head">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"></path>
-                            </svg>
+                            <span class="title-icon">
+                                <svg class="title-img cartoon-svg" aria-hidden="true">
+                                    <use href="#ic-gear"></use>
+                                </svg>
+                            </span>
                             设备状态
                         </div>
                     </div>
 
                     <div class="device-row">
-                        <div class="device-left">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M8.5 4h7l4 7H4.5l4-7z"></path>
-                                <path d="M12 11v6"></path>
-                                <path d="M8.5 20h7"></path>
-                            </svg>
-                            台灯状态
-                        </div>
 
-                        <span class="badge" id="lightBadge">已关闭</span>
+                        <svg class="device-img cartoon-svg" aria-hidden="true">
+                            <use href="#ic-lamp"></use>
+                        </svg>
+
+                        <span class="device-name">台灯状态</span>
+
+                        <span class="badge badge-off" id="lightBadge">已关闭</span>
 
                         <button class="switch" id="lightToggle" onclick="toggleLight()" aria-label="切换台灯">
                             <span></span>
                         </button>
+
                     </div>
 
                     <div class="device-row">
-                        <div class="device-left">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18 9a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6z"></path>
-                                <path d="M10 19a2.2 2.2 0 0 0 4 0"></path>
-                            </svg>
-                            蜂鸣器状态
-                        </div>
 
-                        <span class="badge" id="buzzerBadge">已开启</span>
+                        <svg class="device-img cartoon-svg" aria-hidden="true">
+                            <use href="#ic-bell"></use>
+                        </svg>
+
+                        <span class="device-name">蜂鸣器状态</span>
+
+                        <span class="badge badge-on" id="buzzerBadge">已开启</span>
 
                         <button class="switch on" id="buzzerToggle" onclick="toggleBuzzer()" aria-label="切换蜂鸣器">
                             <span></span>
                         </button>
+
                     </div>
 
                     <div class="device-row">
-                        <div class="device-left">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="12" rx="2"></rect>
-                                <path d="M8 20h8"></path>
-                                <path d="M12 16v4"></path>
-                            </svg>
-                            OLED 显示
-                        </div>
 
-                        <span class="badge badge-muted">模拟模式</span>
-                    </div>
+                        <svg class="device-img cartoon-svg" aria-hidden="true">
+                            <use href="#ic-screen"></use>
+                        </svg>
 
-                </section>
+                        <span class="device-name">OLED显示</span>
 
-                <!-- 学习计时 -->
-                <section class="card timer-card">
+                        <span class="badge badge-on">正常</span>
 
-                    <div class="card-head">
-                        <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="13" r="7.5"></circle>
-                                <path d="M12 9v4l2.5 1.6"></path>
-                                <path d="M9 2.5h6"></path>
-                            </svg>
-                            学习计时
-                        </div>
-
-                        <span class="badge" id="timerStatus">空闲</span>
-                    </div>
-
-                    <div class="timer-display" id="timerControlCountdown">25:00</div>
-
-                    <div class="timer-sub">
-                        阶段剩余时间 · 25 分钟专注 / 5 分钟休息
-                    </div>
-
-                    <div class="timer-actions">
-                        <button class="pill-btn pill-primary" onclick="timerControl('start')">
-                            开始 / 继续
-                        </button>
-
-                        <button class="pill-btn" onclick="timerControl('pause')">
-                            暂停
-                        </button>
-
-                        <button class="pill-btn pill-line" onclick="timerControl('reset')">
-                            重置
-                        </button>
                     </div>
 
                 </section>
 
                 <!-- 快捷控制 -->
-                <section class="card">
+                <section class="card quick-card">
 
                     <div class="card-head">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"></path>
-                            </svg>
+                            <span class="title-icon">
+                                <svg class="title-img cartoon-svg" aria-hidden="true">
+                                    <use href="#ic-bolt"></use>
+                                </svg>
+                            </span>
                             快捷控制
                         </div>
                     </div>
@@ -454,15 +522,45 @@
                     <div class="quick-actions">
 
                         <button class="quick-btn quick-blue" onclick="control('light', true)">
+                            <svg class="quick-img cartoon-svg" aria-hidden="true">
+                                <use href="#ic-lamp"></use>
+                            </svg>
                             开灯
                         </button>
 
                         <button class="quick-btn quick-peach" onclick="control('light', false)">
+                            <svg class="quick-img cartoon-svg muted-img" aria-hidden="true">
+                                <use href="#ic-lamp"></use>
+                            </svg>
                             关灯
                         </button>
 
-                        <button class="quick-btn quick-pink" onclick="toggleBuzzer()">
-                            蜂鸣提醒
+                        <button class="quick-btn quick-purple" onclick="toggleBuzzer()">
+                            <svg class="quick-img cartoon-svg" aria-hidden="true">
+                                <use href="#ic-bell"></use>
+                            </svg>
+                            测试蜂鸣器
+                        </button>
+
+                    </div>
+
+                    <div class="quick-timer-head">
+                        <span>学习计时</span>
+                        <strong id="quickTimer">25:00</strong>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="quick-btn quick-green" onclick="timerControl('start')">
+                            开始
+                        </button>
+
+                        <button class="quick-btn quick-white" onclick="timerControl('pause')">
+                            暂停
+                        </button>
+
+                        <button class="quick-btn quick-white" onclick="timerControl('reset')">
+                            重置
                         </button>
 
                     </div>
@@ -474,11 +572,11 @@
 
                     <div class="card-head">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="8.5"></circle>
-                                <path d="M12 11v5"></path>
-                                <path d="M12 8v.01"></path>
-                            </svg>
+                            <span class="title-icon">
+                                <svg class="title-img cartoon-svg" aria-hidden="true">
+                                    <use href="#ic-info"></use>
+                                </svg>
+                            </span>
                             系统信息
                         </div>
                     </div>
@@ -489,30 +587,19 @@
                     </div>
 
                     <div class="info-row">
-                        <span>摄像头状态</span>
-                        <strong id="sysCamera">检测中</strong>
-                    </div>
-
-                    <div class="info-row">
-                        <span>今日学习</span>
-                        <strong>
-                            <span id="todayStudy">0 分钟</span>
-                            ·
-                            <span id="todayReminders">0 次提醒</span>
-                        </strong>
+                        <span>运行时长</span>
+                        <strong id="sysUptime">--</strong>
                     </div>
 
                     <div class="info-row">
                         <span>数据库状态</span>
-                        <strong class="ok" id="sysDatabase">正常</strong>
+                        <strong class="ok" id="sysDatabase">
+                            <span class="info-dot"></span>正常
+                        </strong>
                     </div>
 
-                    <svg class="system-lamp" viewBox="0 0 120 110" fill="none" aria-hidden="true">
-                        <path d="M40 20h26l12 20H28l12-20z" stroke="#C3D6E7" stroke-width="2"></path>
-                        <path d="M53 40v36c0 6 4 10 10 10h12" stroke="#C3D6E7" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M65 86h22" stroke="#C3D6E7" stroke-width="2.6" stroke-linecap="round"></path>
-                        <path d="M30 96h80" stroke="#DCE7F1" stroke-width="2" stroke-linecap="round"></path>
-                        <circle cx="53" cy="40" r="14" fill="#FFF6E4"></circle>
+                    <svg class="system-lamp cartoon-svg" aria-hidden="true">
+                        <use href="#ic-plant"></use>
                     </svg>
 
                 </section>
@@ -525,31 +612,26 @@
         <section class="card records-card" id="records">
 
             <div class="card-head">
+
                 <div class="card-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 6h12"></path>
-                        <path d="M8 12h12"></path>
-                        <path d="M8 18h12"></path>
-                        <circle cx="4" cy="6" r="1"></circle>
-                        <circle cx="4" cy="12" r="1"></circle>
-                        <circle cx="4" cy="18" r="1"></circle>
-                    </svg>
+                    <span class="title-icon">
+                        <svg class="title-img cartoon-svg" aria-hidden="true">
+                            <use href="#ic-notebook"></use>
+                        </svg>
+                    </span>
                     学习历史记录
+                    <span class="summary-line">
+                        累计 <span id="totalSessions">0</span> 次 ·
+                        <span id="totalMinutes">0 分钟</span> ·
+                        提醒 <span id="totalReminders">0 次</span>
+                    </span>
                 </div>
 
-                <div class="summary-line">
-                    累计 <span id="totalSessions">0</span> 次
-                    ·
-                    <span id="totalMinutes">0 分钟</span>
-                    ·
-                    提醒 <span id="totalReminders">0 次</span>
-                </div>
             </div>
 
             <div class="table-wrap">
 
                 <table>
-
                     <thead>
                         <tr>
                             <th>编号</th>
@@ -563,23 +645,16 @@
 
                     <tbody id="recordTable">
                         <tr>
-                            <td colspan="6" class="empty">
-                                正在加载学习记录……
-                            </td>
+                            <td colspan="6" class="empty">正在加载学习记录……</td>
                         </tr>
                     </tbody>
-
                 </table>
 
             </div>
 
-            <div id="message">等待设备连接……</div>
+            <div id="message"></div>
 
         </section>
-
-        <footer class="footer">
-            SMART DESK · INTELLIGENT LEARNING SYSTEM
-        </footer>
 
     </main>
 

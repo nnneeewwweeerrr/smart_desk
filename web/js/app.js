@@ -118,7 +118,7 @@ function postureText(value) {
 
         "keypoints not clear": "关键点不清晰",
 
-        no_person: "未检测到人员",
+        "no person": "未检测到人员",
 
         "wait calibration": "等待姿态校准"
     };
@@ -151,6 +151,25 @@ function formatTime(seconds) {
 
     return String(minutes).padStart(2, "0") + ":" +
         String(remain).padStart(2, "0");
+}
+
+function formatUptime(seconds) {
+
+    seconds = Math.max(0, Number(seconds) || 0);
+
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    if (days > 0) {
+        return days + " 天 " + hours + " 小时";
+    }
+
+    if (hours > 0) {
+        return hours + " 小时 " + minutes + " 分钟";
+    }
+
+    return minutes + " 分钟";
 }
 
 
@@ -188,9 +207,15 @@ async function refreshStatus() {
         const database = getElement("sysDatabase");
 
         if (database) {
-            database.textContent = "正常";
+            database.innerHTML =
+                '<span class="info-dot"></span>正常';
             database.classList.add("ok");
         }
+
+        setText(
+            "sysUptime",
+            formatUptime(data.uptime_seconds)
+        );
 
 
         // 摄像头状态
@@ -201,7 +226,7 @@ async function refreshStatus() {
             if (data.camera_online) {
 
                 camera.textContent = "● 检测中...";
-                camera.style.color = "#63a98b";
+                camera.style.color = "#5aa38c";
 
                 setText(
                     "videoMessage",
@@ -220,11 +245,6 @@ async function refreshStatus() {
             }
         }
 
-        setText(
-            "sysCamera",
-            data.camera_online ? "在线" : "离线"
-        );
-
 
         // 姿态状态
         const posture = normalizePosture(data.posture);
@@ -236,6 +256,7 @@ async function refreshStatus() {
                 "unknown",
                 "wait calibration",
                 "keypoints not clear",
+                "no person",
                 "no_person"
             ].includes(posture);
 
@@ -253,45 +274,41 @@ async function refreshStatus() {
 
         if (stateText && stateDot) {
 
+            const dotClass = ["dot"];
+
+            if (data.study_status === "studying") {
+                dotClass.push("green");
+            } else if (data.study_status === "resting") {
+                dotClass.push("amber");
+            }
+
+            stateDot.className = dotClass.join(" ");
+            stateDot.textContent = "";
+
             stateText.textContent = studyStatus;
             stateText.prepend(stateDot);
-
-            stateDot.className = "dot";
-
-            if (data.study_status === "studying") {
-                stateDot.classList.add("green");
-            } else if (data.study_status === "resting") {
-                stateDot.classList.add("amber");
-            }
-        }
-
-        const timerStatus = getElement("timerStatus");
-
-        if (timerStatus) {
-
-            timerStatus.textContent = studyStatus;
-
-            timerStatus.className = "badge";
-
-            if (data.study_status === "studying") {
-                timerStatus.classList.add("on");
-            } else if (data.study_status === "idle") {
-                timerStatus.classList.add("off");
-            }
         }
 
 
         // 计时与学习时长
-        const remaining = formatTime(data.remaining_seconds);
-
         const idle = String(data.study_status || "idle") === "idle";
+        const status = String(data.study_status || "idle").toLowerCase();
 
-        setText(
-            "timerControlCountdown",
-            idle && Number(data.remaining_seconds) === 0
-                ? "25:00"
-                : remaining
+        const totalSeconds = status === "resting" ? 5 * 60 : 25 * 60;
+        const remainingSeconds = Math.max(
+            0,
+            Number(data.remaining_seconds) || 0
         );
+
+        const displaySeconds =
+            idle && remainingSeconds <= 0
+                ? totalSeconds
+                : remainingSeconds;
+
+        setText("quickTimer", formatTime(displaySeconds));
+        setText("ringTimer", formatTime(displaySeconds));
+
+        updateTimerRing(status, displaySeconds, totalSeconds);
 
         setText(
             "statStudyMinutes",
@@ -300,15 +317,22 @@ async function refreshStatus() {
 
 
         // 设备状态
-        setText(
-            "lightBadge",
-            data.light ? "已开启" : "已关闭"
-        );
+        const lightBadge = getElement("lightBadge");
 
-        setText(
-            "buzzerBadge",
-            data.buzzer_enabled ? "已开启" : "已静音"
-        );
+        if (lightBadge) {
+            lightBadge.textContent = data.light ? "已开启" : "已关闭";
+            lightBadge.className =
+                "badge " + (data.light ? "badge-on" : "badge-off");
+        }
+
+        const buzzerBadge = getElement("buzzerBadge");
+
+        if (buzzerBadge) {
+            buzzerBadge.textContent =
+                data.buzzer_enabled ? "已开启" : "已静音";
+            buzzerBadge.className =
+                "badge " + (data.buzzer_enabled ? "badge-on" : "badge-off");
+        }
 
         updateSwitch("lightToggle", Boolean(data.light));
         updateSwitch("buzzerToggle", Boolean(data.buzzer_enabled));
@@ -348,16 +372,48 @@ async function refreshStatus() {
 // 姿势视觉反馈
 // =====================================================
 
+// 圆环倒计时：r = 63
+const RING_LENGTH = 2 * Math.PI * 63;
+
+
+function updateTimerRing(status, remaining, total) {
+
+    const ringBox = getElement("postureRingBox");
+    const ring = getElement("postureRing");
+
+    if (ringBox) {
+
+        ringBox.classList.remove("studying", "resting", "paused", "idle");
+
+        if (status === "studying") {
+            ringBox.classList.add("studying");
+        } else if (status === "resting") {
+            ringBox.classList.add("resting");
+        } else if (status === "paused") {
+            ringBox.classList.add("paused");
+        } else {
+            ringBox.classList.add("idle");
+        }
+    }
+
+    if (ring) {
+
+        const ratio = total > 0
+            ? Math.min(1, Math.max(0, remaining / total))
+            : 0;
+
+        ring.style.strokeDasharray = RING_LENGTH.toFixed(1);
+        ring.style.strokeDashoffset =
+            (RING_LENGTH * (1 - ratio)).toFixed(1);
+    }
+}
+
+
 function updatePostureVisual(posture, abnormal, alerting) {
 
     const ringBox = getElement("postureRingBox");
     const ringText = getElement("ringPostureText");
     const statCheck = getElement("postureCheck");
-    const ringCheck = getElement("ringCheck");
-
-    if (ringBox) {
-        ringBox.className = "ring";
-    }
 
     if (ringText) {
         ringText.className = "ring-text";
@@ -371,14 +427,8 @@ function updatePostureVisual(posture, abnormal, alerting) {
 
     if (abnormal) {
 
-        const danger = alerting;
-
-        if (ringBox) {
-            ringBox.classList.add(danger ? "danger" : "warn");
-        }
-
         if (ringText) {
-            ringText.classList.add(danger ? "danger" : "warn");
+            ringText.classList.add(alerting ? "danger" : "warn");
         }
 
         if (statCheck) {
@@ -393,10 +443,6 @@ function updatePostureVisual(posture, abnormal, alerting) {
 
     } else {
 
-        if (ringBox) {
-            ringBox.classList.add("idle");
-        }
-
         if (ringText) {
             ringText.classList.add("idle");
         }
@@ -410,13 +456,8 @@ function updatePostureVisual(posture, abnormal, alerting) {
         statCheck.textContent = mark;
     }
 
-    if (ringCheck) {
-        ringCheck.textContent = mark;
-        ringCheck.className = "ring-check";
-
-        if (mark !== "✓") {
-            ringCheck.classList.add("hide");
-        }
+    if (ringBox) {
+        ringBox.classList.toggle("alert", Boolean(abnormal && alerting));
     }
 }
 
@@ -428,17 +469,12 @@ function updatePostureVisual(posture, abnormal, alerting) {
 function updatePosturePanels(posture, abnormal, data) {
 
     const warningPanel = getElement("warningPanel");
-    const normalPanel = getElement("normalPanel");
+
+    if (!warningPanel) return;
 
     if (abnormal) {
 
-        if (warningPanel) {
-            warningPanel.classList.add("show");
-        }
-
-        if (normalPanel) {
-            normalPanel.style.display = "none";
-        }
+        warningPanel.classList.add("show");
 
         setText(
             "warningTitle",
@@ -474,46 +510,7 @@ function updatePosturePanels(posture, abnormal, data) {
         return;
     }
 
-    if (warningPanel) {
-        warningPanel.classList.remove("show");
-    }
-
-    if (normalPanel) {
-        normalPanel.style.display = "block";
-    }
-
-    if (!data.person_detected) {
-
-        setText(
-            "normalPanel",
-            "当前未检测到人员或关键点不清晰，" +
-            "请进入识别范围并保持上半身完整可见。"
-        );
-
-    } else if (
-        posture === "keypoints not clear" ||
-        posture === "unknown"
-    ) {
-
-        setText(
-            "normalPanel",
-            "暂时无法清晰识别坐姿，请调整摄像头范围或坐姿。"
-        );
-
-    } else if (posture === "wait calibration") {
-
-        setText(
-            "normalPanel",
-            "尚未建立正常坐姿基准，请保持正常坐姿并点击姿态校准。"
-        );
-
-    } else {
-
-        setText(
-            "normalPanel",
-            "当前坐姿状态正常，请继续保持。"
-        );
-    }
+    warningPanel.classList.remove("show");
 }
 
 
@@ -557,76 +554,72 @@ async function refreshSummary() {
 
 
 // =====================================================
-// 今日统计
-// =====================================================
-
-async function refreshTodayStats() {
-
-    try {
-
-        const data = await requestJSON("/api/today_stats");
-
-        setText(
-            "todayStudy",
-            (data.today_study_minutes ?? 0) + " 分钟"
-        );
-
-        setText(
-            "todayReminders",
-            (data.today_reminders ?? 0) + " 次提醒"
-        );
-
-    } catch (error) {
-
-        console.error("今日统计加载失败：", error);
-    }
-}
-
-
-// =====================================================
 // 学习趋势图表
 // =====================================================
 
-let trendDays = 7;
+let trendRange = "today";
 
 
-function niceMax(value, defaultValue) {
+// 平滑曲线：三次贝塞尔（控制点限制在绘图区内，避免曲线冲出坐标轴）
+function smoothPath(points, top, bottom) {
 
-    if (!value || value <= 0) return defaultValue;
+    if (points.length === 0) return "";
 
-    const steps = [10, 20, 30, 60, 90, 120, 180, 240, 300, 360, 480, 600];
-
-    for (const step of steps) {
-        if (value <= step) return step;
+    if (points.length === 1) {
+        return `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
     }
 
-    return Math.ceil(value / 60) * 60;
+    const clampY = value => Math.min(bottom, Math.max(top, value));
+
+    let path = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+
+    for (let i = 0; i < points.length - 1; i += 1) {
+
+        const p0 = points[i - 1] || points[i];
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const p3 = points[i + 2] || p2;
+
+        const c1x = p1.x + (p2.x - p0.x) / 6;
+        const c1y = clampY(p1.y + (p2.y - p0.y) / 6);
+        const c2x = p2.x - (p3.x - p1.x) / 6;
+        const c2y = clampY(p2.y - (p3.y - p1.y) / 6);
+
+        path +=
+            ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)},` +
+            ` ${c2x.toFixed(1)} ${c2y.toFixed(1)},` +
+            ` ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+
+    return path;
 }
 
 
 function buildChart(records) {
 
     const width = 640;
-    const height = 232;
+    const height = 214;
 
-    const padLeft = 30;
-    const padRight = 42;
-    const padTop = 16;
-    const padBottom = 28;
+    const padLeft = 32;
+    const padRight = 16;
+    const padTop = 30;
+    const padBottom = 26;
 
     const plotWidth = width - padLeft - padRight;
     const plotHeight = height - padTop - padBottom;
 
     const count = records.length;
 
-    const maxMinutes = niceMax(
-        Math.max(...records.map(item => Number(item.minutes) || 0)),
-        30
+    const maxMinutes = Math.max(
+        90,
+        Math.ceil(
+            Math.max(...records.map(item => Number(item.minutes) || 0)) / 30
+        ) * 30
     );
 
-    const maxReminders = niceMax(
-        Math.max(...records.map(item => Number(item.reminders) || 0)),
-        5
+    const maxReminders = Math.max(
+        4,
+        Math.max(...records.map(item => Number(item.reminders) || 0))
     );
 
     const x = index => count <= 1
@@ -639,13 +632,10 @@ function buildChart(records) {
     const yReminders = value =>
         padTop + plotHeight * (1 - value / maxReminders);
 
-    const formatDate = value => escapeHTML(String(value || "").slice(5));
 
-
-    // 横向网格与左右纵轴
+    // 横向网格与左侧刻度
     let grid = "";
     let leftAxis = "";
-    let rightAxis = "";
 
     for (let i = 0; i <= 3; i += 1) {
 
@@ -653,27 +643,22 @@ function buildChart(records) {
 
         grid += `<line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="#eef3f8" stroke-width="1" />`;
 
-        leftAxis += `<text x="${padLeft - 8}" y="${y + 3}" text-anchor="end" font-size="9" fill="#9aa8b8">${Math.round(maxMinutes * (3 - i) / 3)}</text>`;
-
-        rightAxis += `<text x="${width - padRight + 8}" y="${y + 3}" font-size="9" fill="#9dbba9">${Math.round(maxReminders * (3 - i) / 3)}</text>`;
+        leftAxis += `<text x="${padLeft - 8}" y="${y + 3}" text-anchor="end" font-size="9" fill="#a6b4c4">${Math.round(maxMinutes * (3 - i) / 3)}</text>`;
     }
 
 
-    // 横轴日期标签
+    // 横轴标签
     let xAxis = "";
 
     const labelStep = Math.max(1, Math.ceil(count / 7));
 
     records.forEach((item, index) => {
 
-        if (
-            index % labelStep !== 0 &&
-            index !== count - 1
-        ) {
+        if (index % labelStep !== 0 && index !== count - 1) {
             return;
         }
 
-        xAxis += `<text x="${x(index)}" y="${height - 8}" text-anchor="middle" font-size="9" fill="#9aa8b8">${formatDate(item.date)}</text>`;
+        xAxis += `<text x="${x(index).toFixed(1)}" y="${height - 7}" text-anchor="middle" font-size="9" fill="#a6b4c4">${escapeHTML(item.label)}</text>`;
     });
 
 
@@ -688,66 +673,131 @@ function buildChart(records) {
         y: yReminders(Number(item.reminders) || 0)
     }));
 
-    const toPolyline = points =>
-        points.map(point => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
-
     const areaPath =
-        `M ${minutePoints[0].x.toFixed(1)} ${padTop + plotHeight} ` +
-        minutePoints.map(point => `L ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ") +
-        ` L ${minutePoints[count - 1].x.toFixed(1)} ${padTop + plotHeight} Z`;
+        smoothPath(minutePoints, padTop, padTop + plotHeight) +
+        ` L ${minutePoints[count - 1].x.toFixed(1)} ${padTop + plotHeight}` +
+        ` L ${minutePoints[0].x.toFixed(1)} ${padTop + plotHeight} Z`;
 
     const showDots = count <= 14;
 
-    const dots = showDots
+    const minuteDots = showDots
         ? minutePoints.map((point, index) => (
-            `<circle cx="${point.x}" cy="${point.y}" r="3" fill="#ffffff" stroke="#6e9fd8" stroke-width="2"><title>${formatDate(records[index].date)}：${Number(records[index].minutes) || 0} 分钟</title></circle>`
-        )).join("") +
-        reminderPoints.map((point, index) => (
-            `<circle cx="${point.x}" cy="${point.y}" r="2.5" fill="#ffffff" stroke="#6fb795" stroke-width="2"><title>${formatDate(records[index].date)}：${Number(records[index].reminders) || 0} 次提醒</title></circle>`
+            `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="2.8" fill="#ffffff" stroke="#6d97c8" stroke-width="2"><title>${escapeHTML(records[index].label)}：${Number(records[index].minutes) || 0} 分钟</title></circle>`
+        )).join("")
+        : "";
+
+    const reminderDots = showDots
+        ? reminderPoints.map((point, index) => (
+            `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="2.4" fill="#ffffff" stroke="#6fb795" stroke-width="2"><title>${escapeHTML(records[index].label)}：${Number(records[index].reminders) || 0} 次提醒</title></circle>`
         )).join("")
         : "";
 
 
     return `
         <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="学习趋势图">
-            <defs></defs>
+
+            <circle cx="${width - padRight - 148}" cy="12" r="3.2" fill="#6d97c8"></circle>
+            <text x="${width - padRight - 139}" y="15.5" font-size="9.5" fill="#8395a8">学习时长</text>
+
+            <circle cx="${width - padRight - 60}" cy="12" r="3.2" fill="#6fb795"></circle>
+            <text x="${width - padRight - 51}" y="15.5" font-size="9.5" fill="#8395a8">提醒次数</text>
 
             ${grid}
 
-            <path d="${areaPath}" fill="#6e9fd8" opacity="0.08"></path>
+            <defs>
+                <linearGradient id="areaBlue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6d97c8" stop-opacity="0.16"></stop>
+                    <stop offset="100%" stop-color="#6d97c8" stop-opacity="0"></stop>
+                </linearGradient>
+            </defs>
 
-            <polyline
-                points="${toPolyline(minutePoints)}"
+            <path d="${areaPath}" fill="url(#areaBlue)"></path>
+
+            <path
+                d="${smoothPath(minutePoints, padTop, padTop + plotHeight)}"
                 fill="none"
-                stroke="#6e9fd8"
+                stroke="#6d97c8"
                 stroke-width="2.4"
                 stroke-linecap="round"
                 stroke-linejoin="round">
-            </polyline>
+            </path>
 
-            <polyline
-                points="${toPolyline(reminderPoints)}"
+            <path
+                d="${smoothPath(reminderPoints, padTop, padTop + plotHeight)}"
                 fill="none"
                 stroke="#6fb795"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round">
-            </polyline>
+            </path>
 
-            ${dots}
+            ${minuteDots}
+            ${reminderDots}
 
             ${leftAxis}
-            ${rightAxis}
             ${xAxis}
 
-            <text x="${padLeft - 8}" y="${padTop - 5}" text-anchor="end" font-size="8" fill="#b0bdcb">分钟</text>
-            <text x="${width - padRight + 8}" y="${padTop - 5}" font-size="8" fill="#b0c8b9">次</text>
         </svg>
     `;
 }
 
 
-async function refreshDailyStats(days = trendDays) {
+function buildTodayRecords(records) {
+
+    // 今日按 2 小时分桶：8/10/12/14/16/18 点
+    const buckets = [
+        { hour: 8, label: "8时" },
+        { hour: 10, label: "10时" },
+        { hour: 12, label: "12时" },
+        { hour: 14, label: "14时" },
+        { hour: 16, label: "16时" },
+        { hour: 18, label: "18时" }
+    ];
+
+    const today = new Date();
+
+    const todayKey =
+        today.getFullYear() + "-" +
+        String(today.getMonth() + 1).padStart(2, "0") + "-" +
+        String(today.getDate()).padStart(2, "0");
+
+    const result = buckets.map(item => ({
+        label: item.label,
+        minutes: 0,
+        reminders: 0
+    }));
+
+    records.forEach(record => {
+
+        const startTime = String(record.start_time || "");
+
+        if (startTime.slice(0, 10) !== todayKey) {
+            return;
+        }
+
+        const hour = Number(startTime.slice(11, 13));
+
+        if (!Number.isFinite(hour)) {
+            return;
+        }
+
+        let index = 0;
+
+        for (let i = 0; i < buckets.length; i += 1) {
+            if (hour >= buckets[i].hour) {
+                index = i;
+            }
+        }
+
+        result[index].minutes += Number(record.study_minutes) || 0;
+        result[index].reminders += Number(record.reminder_count) || 0;
+    });
+
+    return result;
+}
+
+
+async function refreshDailyStats() {
 
     const chart = getElement("dailyChart");
 
@@ -755,37 +805,32 @@ async function refreshDailyStats(days = trendDays) {
 
     try {
 
-        const records = await requestJSON(
-            "/api/daily_stats?days=" + days
-        );
+        let records = [];
 
-        if (!Array.isArray(records) || records.length === 0) {
+        if (trendRange === "today") {
 
-            chart.innerHTML =
-                '<div class="empty">暂无学习趋势数据</div>';
+            const raw = await requestJSON("/api/records");
 
-            return;
+            records = buildTodayRecords(
+                Array.isArray(raw) ? raw : []
+            );
+
+        } else {
+
+            const days = trendRange === "week" ? 7 : 30;
+
+            const raw = await requestJSON(
+                "/api/daily_stats?days=" + days
+            );
+
+            records = (Array.isArray(raw) ? raw : []).map(item => ({
+                label: String(item.date || "").slice(5),
+                minutes: Number(item.minutes) || 0,
+                reminders: Number(item.reminders) || 0
+            }));
         }
 
         chart.innerHTML = buildChart(records);
-
-
-        const totalMinutes = records.reduce(
-            (sum, item) => sum + (Number(item.minutes) || 0),
-            0
-        );
-
-        const totalReminders = records.reduce(
-            (sum, item) => sum + (Number(item.reminders) || 0),
-            0
-        );
-
-        setText(
-            "chartTip",
-            "近 " + days + " 天累计学习 " + totalMinutes +
-            " 分钟 · 坐姿提醒 " + totalReminders +
-            " 次 · 蓝线为学习时长，绿线为提醒次数"
-        );
 
     } catch (error) {
 
@@ -807,9 +852,9 @@ document.querySelectorAll("#trendTabs button").forEach(button => {
 
         button.classList.add("active");
 
-        trendDays = Number(button.dataset.days) || 7;
+        trendRange = button.dataset.range || "today";
 
-        refreshDailyStats(trendDays);
+        refreshDailyStats();
     });
 });
 
@@ -903,6 +948,12 @@ async function timerControl(action) {
         showMessage(result.message || "计时指令已发送");
 
         await refreshStatus();
+
+        if (action === "reset") {
+            await refreshRecords();
+            await refreshSummary();
+            await refreshDailyStats();
+        }
 
     } catch (error) {
 
@@ -1045,9 +1096,7 @@ function refreshAll() {
 
     refreshSummary();
 
-    refreshTodayStats();
-
-    refreshDailyStats(trendDays);
+    refreshDailyStats();
 
     refreshRecords();
 }
@@ -1060,8 +1109,6 @@ setInterval(refreshStatus, 1000);
 
 setInterval(refreshSummary, 5000);
 
-setInterval(refreshTodayStats, 5000);
-
-setInterval(() => refreshDailyStats(trendDays), 30000);
+setInterval(refreshDailyStats, 30000);
 
 setInterval(refreshRecords, 10000);

@@ -30,6 +30,9 @@ PROJECT_ROOT = os.path.dirname(
 # 前端文件夹
 WEB_DIR = os.path.join(PROJECT_ROOT, "web")
 
+# 服务启动时间，用于计算系统运行时长
+WEB_START_TIME = time.time()
+
 
 # =====================================================
 # Flask 初始化
@@ -98,9 +101,13 @@ def video_feed():
 @app.route("/api/status", methods=["GET"])
 def get_status():
 
-    return jsonify(
-        system_state.get_state()
+    state = system_state.get_state()
+
+    state["uptime_seconds"] = int(
+        max(0, time.time() - WEB_START_TIME)
     )
+
+    return jsonify(state)
 
 
 # =====================================================
