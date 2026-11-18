@@ -117,21 +117,21 @@
         <section class="stats-grid">
 
             <div class="stat-card">
+                <div class="stat-icon">▤</div>
                 <div class="stat-label">累计学习次数</div>
                 <div class="stat-value" id="totalSessions">0</div>
-                <div class="stat-icon">▤</div>
             </div>
 
             <div class="stat-card">
+                <div class="stat-icon">◷</div>
                 <div class="stat-label">累计学习时间</div>
                 <div class="stat-value" id="totalMinutes">0 分钟</div>
-                <div class="stat-icon">◷</div>
             </div>
 
             <div class="stat-card">
+                <div class="stat-icon">♧</div>
                 <div class="stat-label">累计坐姿提醒</div>
                 <div class="stat-value" id="totalReminders">0</div>
-                <div class="stat-icon">♧</div>
             </div>
 
         </section>
@@ -302,7 +302,7 @@
                     </div>
 
                     <div class="chart-tip" id="chartTip">
-                        数据来源：本地 SQLite 学习记录
+                        数据来源：本地 SQLite 学习记录 · 单位：分钟
                     </div>
 
                 </div>
@@ -381,7 +381,10 @@
                 <div class="device-row">
 
                     <div>
-                        <div class="device-name">☼ 智能台灯</div>
+                        <div class="device-name">
+                            ☼ 智能台灯
+                            <span class="device-state" id="lightStatus">已关闭</span>
+                        </div>
                         <div class="device-desc">
                             控制台灯开关状态
                         </div>
@@ -403,7 +406,10 @@
                 <div class="device-row">
 
                     <div>
-                        <div class="device-name">♧ 蜂鸣提醒</div>
+                        <div class="device-name">
+                            ♧ 蜂鸣提醒
+                            <span class="device-state" id="buzzerStatus">已开启</span>
+                        </div>
                         <div class="device-desc">
                             控制坐姿异常声音提醒
                         </div>

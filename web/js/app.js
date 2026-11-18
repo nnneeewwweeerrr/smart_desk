@@ -84,13 +84,13 @@ function postureText(value) {
     const map = {
         normal: "坐姿正常",
 
-        head_down: "低头",
+        "head down": "低头",
 
-        leaning: "身体前倾",
+        "lean forward": "身体前倾",
 
-        tilted_left: "向左倾斜",
+        "tilt left": "向左倾斜",
 
-        tilted_right: "向右倾斜",
+        "tilt right": "向右倾斜",
 
         unknown: "等待识别",
 
@@ -251,6 +251,21 @@ async function refreshStatus() {
 
 
         // =================================================
+        // 设备状态
+        // =================================================
+
+        setText(
+            "lightStatus",
+            data.light ? "已开启" : "已关闭"
+        );
+
+        setText(
+            "buzzerStatus",
+            data.buzzer_enabled ? "已开启" : "已关闭"
+        );
+
+
+        // =================================================
         // 坐姿异常判断
         // =================================================
 
@@ -355,7 +370,8 @@ async function refreshStatus() {
 
                 setText(
                     "normalPanel",
-                    "当前未检测到人员，请进入摄像头识别范围。"
+                    "当前未检测到人员或关键点不清晰，" +
+                    "请进入识别范围并保持上半身完整可见。"
                 );
 
             } else if (
@@ -419,7 +435,7 @@ async function refreshSummary() {
 
         setText(
             "totalReminders",
-            data.total_reminders ?? 0
+            (data.total_reminders ?? 0) + " 次"
         );
 
     } catch (error) {
@@ -484,18 +500,47 @@ async function refreshDailyStats() {
             1
         );
 
+        // 纵轴刻度向上取整，便于阅读
+        const step = maxMinutes <= 10
+            ? 2
+            : (maxMinutes <= 30 ? 10 : 30);
 
-        chart.innerHTML = records.map(item => {
+        const axisMax = Math.ceil(maxMinutes / step) * step;
+
+        const ticks = [axisMax, axisMax / 2, 0];
+
+        const axisLabels = ticks
+            .map(value => `<span>${value}</span>`)
+            .join("");
+
+        const gridLines = ticks
+            .map((_, index) => (
+                `<div class="chart-line" style="top:${index * 50}%"></div>`
+            ))
+            .join("");
+
+
+        const bars = records.map(item => {
 
             const minutes = Number(item.minutes) || 0;
 
             const height = minutes > 0
-                ? Math.max(minutes / maxMinutes * 100, 3)
+                ? Math.max(minutes / axisMax * 100, 3)
                 : 0;
 
             const dateLabel = escapeHTML(
                 String(item.date || "").slice(5)
             );
+
+            const fill = minutes > 0
+                ? `
+                    <div
+                        class="bar-fill"
+                        style="height:${height}%"
+                        title="${dateLabel}：${minutes} 分钟">
+                    </div>
+                `
+                : "";
 
 
             return `
@@ -506,13 +551,7 @@ async function refreshDailyStats() {
                     </div>
 
                     <div class="bar-track">
-
-                        <div
-                            class="bar-fill"
-                            style="height:${height}%"
-                            title="${dateLabel}：${minutes} 分钟">
-                        </div>
-
+                        ${fill}
                     </div>
 
                     <div class="bar-date">
@@ -523,6 +562,29 @@ async function refreshDailyStats() {
             `;
 
         }).join("");
+
+
+        chart.innerHTML = `
+            <div class="chart-body">
+
+                <div class="chart-axis">
+                    ${axisLabels}
+                </div>
+
+                <div class="chart-plot">
+
+                    <div class="chart-grid">
+                        ${gridLines}
+                    </div>
+
+                    <div class="chart-bars">
+                        ${bars}
+                    </div>
+
+                </div>
+
+            </div>
+        `;
 
 
         const total = records.reduce(
