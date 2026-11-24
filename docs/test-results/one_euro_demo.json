@@ -1,0 +1,21 @@
+{
+  "source": "synthetic_demo",
+  "samples": 200,
+  "runs": 1,
+  "one_euro_parameters": {
+    "min_cutoff": 1.0,
+    "beta": 0.5,
+    "d_cutoff": 1.0
+  },
+  "note": "No claim of human accuracy; labels in recorded data are operator intentions.",
+  "synthetic_metrics": {
+    "moving_average": {
+      "stationary_head_rms": 0.007485811480172493,
+      "step_classification_delay_s": 0.09999999999999964
+    },
+    "one_euro": {
+      "stationary_head_rms": 0.00809108325044596,
+      "step_classification_delay_s": 0.0
+    }
+  }
+}

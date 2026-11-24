@@ -1,0 +1,15 @@
+[Unit]
+Description=Smart Desk posture monitor and web interface
+
+[Service]
+Type=simple
+WorkingDirectory=%h/smart_desk
+ExecStart=%h/smart_desk/.venv-pi/bin/python -u main.py --headless
+Environment=PYTHONDONTWRITEBYTECODE=1
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=15
+
+[Install]
+WantedBy=default.target

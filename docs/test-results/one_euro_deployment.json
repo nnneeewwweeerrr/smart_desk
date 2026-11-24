@@ -1,0 +1,117 @@
+{
+  "backup": "/home/hyz/.local/share/smart-desk/backups/one-euro-20261122-221846",
+  "baseline_database": [
+    15,
+    240,
+    13
+  ],
+  "local_python_tests": 27,
+  "board_python_tests": 27,
+  "one_euro_parameters": {
+    "min_cutoff": 1.0,
+    "beta": 0.5,
+    "d_cutoff": 1.0
+  },
+  "human_accuracy_verified": false,
+  "native_fixture_and_filter_passed": true,
+  "native_camera_frames": 30,
+  "local_frontend_test": true,
+  "service_algorithm_verified": true,
+  "live_video_verified": true,
+  "database_preserved": true,
+  "live_status": {
+    "alert": false,
+    "alert_elapsed": 0.0,
+    "alert_remaining": 5.0,
+    "buzzer_enabled": true,
+    "calibrated": false,
+    "calibration_message": "\u8bf7\u5750\u6b63\u5e76\u79ef\u7d2f\u6709\u6548\u6837\u672c\u540e\u6821\u51c6",
+    "calibration_required": 10,
+    "calibration_result": "waiting",
+    "calibration_samples": 0,
+    "camera_online": true,
+    "device_mode": "mock",
+    "light": false,
+    "person_detected": false,
+    "posture": "KEYPOINTS NOT CLEAR",
+    "posture_command_id": 0,
+    "posture_features": {
+      "filtered": null,
+      "head_change": 0.0,
+      "raw": null,
+      "tilt_change": 0.0
+    },
+    "posture_smoothing": {
+      "beta": 0.5,
+      "d_cutoff": 1.0,
+      "max_gap": 2.0,
+      "method": "one_euro",
+      "min_cutoff": 1.0,
+      "window": 5
+    },
+    "remaining_seconds": 1500,
+    "reminder_count": 0,
+    "reminder_scope": "current_session",
+    "session_start": null,
+    "study_minutes": 0.0,
+    "study_status": "idle",
+    "timer_phase": "idle",
+    "total_reminder_count": 0,
+    "total_study_seconds": 0,
+    "uptime_seconds": 5
+  },
+  "live_summary": {
+    "total_reminders": 13,
+    "total_sessions": 15,
+    "total_study_minutes": 4.0,
+    "total_study_seconds": 240
+  },
+  "final_live_status": {
+    "alert": false,
+    "alert_elapsed": 0.0,
+    "alert_remaining": 5.0,
+    "buzzer_enabled": true,
+    "calibrated": false,
+    "calibration_message": "\u8bf7\u5750\u6b63\u5e76\u79ef\u7d2f\u6709\u6548\u6837\u672c\u540e\u6821\u51c6",
+    "calibration_required": 10,
+    "calibration_result": "waiting",
+    "calibration_samples": 0,
+    "camera_online": true,
+    "device_mode": "mock",
+    "light": false,
+    "person_detected": false,
+    "posture": "KEYPOINTS NOT CLEAR",
+    "posture_command_id": 0,
+    "posture_features": {
+      "filtered": null,
+      "head_change": 0.0,
+      "raw": null,
+      "tilt_change": 0.0
+    },
+    "posture_smoothing": {
+      "beta": 0.5,
+      "d_cutoff": 1.0,
+      "max_gap": 2.0,
+      "method": "one_euro",
+      "min_cutoff": 1.0,
+      "window": null
+    },
+    "remaining_seconds": 1500,
+    "reminder_count": 0,
+    "reminder_scope": "current_session",
+    "session_start": null,
+    "study_minutes": 0.0,
+    "study_status": "idle",
+    "timer_phase": "idle",
+    "total_reminder_count": 0,
+    "total_study_seconds": 0,
+    "uptime_seconds": 5
+  },
+  "final_summary": {
+    "total_reminders": 13,
+    "total_sessions": 15,
+    "total_study_minutes": 4.0,
+    "total_study_seconds": 240
+  },
+  "checked_at": "2026-11-22T22:28:59+08:00"
+}

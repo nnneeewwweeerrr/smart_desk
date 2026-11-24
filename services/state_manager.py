@@ -4,7 +4,7 @@ import threading
 
 class StateManager:
     def __init__(self):
-        self.lock = threading.Lock()
+        self.lock = threading.RLock()
 
         self.state = {
             "camera_online": False,
@@ -22,8 +22,17 @@ class StateManager:
             "alert_remaining": 5.0,
 
             "light": False,
-            "buzzer_enabled": True
+            "buzzer_enabled": False,
+            "buzzer_active": False,
+            "buzzer_mode": "mock",
+            "light_mode": "mock",
         }
+        self.state.update(
+            calibrated=False, calibration_samples=0, calibration_required=10,
+            calibration_result="waiting", calibration_message="请坐正并积累有效样本后校准",
+            posture_command_id=0, session_start=None,
+            reminder_scope="current_session", device_mode="mock",
+        )
 
         # 网页发给主程序的学习计时指令
         self.timer_command = None
@@ -59,6 +68,8 @@ class StateManager:
             return False
 
         with self.lock:
+            if self.timer_command is not None:
+                return False
             self.timer_command = command
 
         return True
@@ -82,7 +93,12 @@ class StateManager:
             return False
 
         with self.lock:
+            if self.posture_command is not None:
+                return False
             self.posture_command = command
+            self.state["posture_command_id"] += 1
+            self.state["calibration_result"] = "pending"
+            self.state["calibration_message"] = "校准指令等待执行"
 
         return True
 

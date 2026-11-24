@@ -109,6 +109,12 @@ python -m main
 
 ## 手工测试脚本
 
+当前主程序默认启用论文 1€ Filter 特征平滑；`--smoothing moving_average` 可切回 5 帧均值对照。算法、参数、真人采样与同输入回放说明见 [OneEuro 算法接入与对照实验](docs/OneEuro算法接入与对照实验.md)。初始参数尚未通过真人数据选优。
+
+控制与数据修复、校准执行回执及最新验证结果见 [代码补全执行记录](docs/代码补全执行记录.md)。逻辑回归可以执行 `python -m unittest discover -s tests -p "test_*.py" -v`，不占用真实摄像头；前端行为检查为 `node tests/test_web_ui.cjs`。
+
+新记录保存 `study_seconds`，`reminder_count` 为当前学习会话提醒次数，进程累计值为 `total_reminder_count`。每日统计按会话开始日期归档，跨午夜不拆分自然日。旧库会自动增加秒数字段，历史上未保存的秒数无法恢复。
+
 `tests/manual/` 下是开发阶段用于排查摄像头、MediaPipe 和姿态判断的脚本，不参与正式运行。需要在项目根目录执行，例如：
 
 ```powershell
@@ -118,6 +124,14 @@ python -m tests.manual.test_posture
 
 ## 树莓派部署提醒
 
-- PC 与树莓派的 GPIO / I2C 环境不同，`Buzzer`、`OLEDDisplay` 目前为 `mock=True`，部署时需切换为真实硬件驱动并重新测试。
+树莓派 4 已补充独立环境与无窗口运行方案，详见 [树莓派部署与运行](docs/树莓派部署与运行.md)。该设备使用 `.venv-pi`（Python 3.11 / MediaPipe 0.10.18），依赖由 `requirements-pi.lock` 锁定；原有 `.venv` 保留。运行入口为：
+
+```bash
+.venv-pi/bin/python -u main.py --headless
+```
+
+已有后台服务时请先停止服务，再手动启动，避免争用摄像头。`SMART_DESK_DB_PATH` 可指定独立测试数据库，默认仍使用 `data/smart_desk.db`。
+
+- `Buzzer`、`OLEDDisplay` 目前仅实现软件模拟；真实 GPIO / I2C 驱动仍需编写和实机联调，仅改 `mock=False` 不会驱动外设。
 - MediaPipe 在 ARM 上的可用版本与 PC 不同，请按树莓派系统实际支持版本安装。
 - 若帧率偏低，可优先降低摄像头分辨率，再考虑降低识别频率。

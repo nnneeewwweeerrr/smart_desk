@@ -153,6 +153,12 @@ function formatTime(seconds) {
         String(remain).padStart(2, "0");
 }
 
+function formatStudyDuration(seconds) {
+    const total = Math.max(0, Math.floor(Number(seconds) || 0));
+    return Math.floor(total / 60) + "分" + (total % 60) + "秒";
+}
+
+
 function formatUptime(seconds) {
 
     seconds = Math.max(0, Number(seconds) || 0);
@@ -181,6 +187,8 @@ let statusRequesting = false;
 
 let lightEnabled = false;
 let buzzerEnabled = true;
+let videoNeedsReconnect = false;
+let lastTimerError = null;
 
 
 async function refreshStatus() {
@@ -195,6 +203,23 @@ async function refreshStatus() {
 
         lightEnabled = Boolean(data.light);
         buzzerEnabled = Boolean(data.buzzer_enabled);
+        if (data.timer_error && data.timer_error !== lastTimerError) showMessage(data.timer_error);
+        lastTimerError = data.timer_error || null;
+        const smoothing = data.posture_smoothing;
+        setText("smoothingStatus", !smoothing ? "正在读取平滑配置" :
+            "特征平滑：" + (smoothing.method === "one_euro" ? "1€ Filter" : "5帧均值"));
+        setText("calibrationStatus",
+            (data.calibration_message || "请坐正后校准") +
+            " · 有效样本 " + (data.calibration_samples || 0) +
+            "/" + (data.calibration_required || 10));
+        const feed = getElement("cameraFeed");
+        if (feed) {
+            feed.style.visibility = data.camera_online ? "visible" : "hidden";
+            if (data.camera_online && videoNeedsReconnect) {
+                feed.src = "/video_feed?t=" + Date.now();
+                videoNeedsReconnect = false;
+            }
+        }
 
 
         // 系统运行状态
@@ -294,7 +319,7 @@ async function refreshStatus() {
         const idle = String(data.study_status || "idle") === "idle";
         const status = String(data.study_status || "idle").toLowerCase();
 
-        const totalSeconds = status === "resting" ? 5 * 60 : 25 * 60;
+        const totalSeconds = data.timer_phase === "resting" ? 5 * 60 : 25 * 60;
         const remainingSeconds = Math.max(
             0,
             Number(data.remaining_seconds) || 0
@@ -312,7 +337,7 @@ async function refreshStatus() {
 
         setText(
             "statStudyMinutes",
-            (Number(data.study_minutes) || 0) + " 分钟"
+            formatStudyDuration(data.total_study_seconds)
         );
 
 
@@ -320,7 +345,8 @@ async function refreshStatus() {
         const lightBadge = getElement("lightBadge");
 
         if (lightBadge) {
-            lightBadge.textContent = data.light ? "已开启" : "已关闭";
+            lightBadge.textContent = (data.light ? "已开启" : "已关闭") +
+                ((data.light_mode || data.device_mode) === "mock" ? "（模拟）" : "");
             lightBadge.className =
                 "badge " + (data.light ? "badge-on" : "badge-off");
         }
@@ -329,7 +355,8 @@ async function refreshStatus() {
 
         if (buzzerBadge) {
             buzzerBadge.textContent =
-                data.buzzer_enabled ? "已开启" : "已静音";
+                (data.buzzer_enabled ? "已开启" : "已静音") +
+                ((data.buzzer_mode || data.device_mode) === "mock" ? "（模拟）" : "（实体）");
             buzzerBadge.className =
                 "badge " + (data.buzzer_enabled ? "badge-on" : "badge-off");
         }
@@ -359,6 +386,9 @@ async function refreshStatus() {
             database.classList.remove("ok");
         }
 
+        const feed = getElement("cameraFeed");
+        if (feed) feed.style.visibility = "hidden";
+        videoNeedsReconnect = true;
         showMessage("无法连接设备服务，请检查后台程序");
 
     } finally {
@@ -538,7 +568,7 @@ async function refreshSummary() {
 
         setText(
             "totalMinutes",
-            (data.total_study_minutes ?? 0) + " 分钟"
+            formatStudyDuration(data.total_study_seconds ?? Number(data.total_study_minutes || 0) * 60)
         );
 
         setText(
@@ -892,7 +922,7 @@ async function refreshRecords() {
 
                 <td>${escapeHTML(record.end_time || "-")}</td>
 
-                <td>${escapeHTML(record.study_minutes ?? 0)} 分钟</td>
+                <td>${escapeHTML(formatStudyDuration(record.study_seconds ?? Number(record.study_minutes || 0) * 60))}</td>
 
                 <td>${escapeHTML(record.reminder_count ?? 0)}</td>
 
@@ -993,9 +1023,22 @@ async function postureControl(action) {
         }
 
 
-        showMessage(result.message || "姿态指令已发送");
-
-        await refreshStatus();
+        showMessage("指令已接收，正在等待校准结果……");
+        const deadline = Date.now() + 10000;
+        while (Date.now() < deadline) {
+            const state = await requestJSON("/api/status");
+            if (state.posture_command_id !== result.command_id) {
+                showMessage("已提交更新的校准指令，请查看当前校准状态");
+                return;
+            }
+            if (state.calibration_result !== "pending") {
+                showMessage(state.calibration_message);
+                await refreshStatus();
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, 250));
+        }
+        showMessage("指令仍在处理中，请查看校准状态或设备连接");
 
     } catch (error) {
 
@@ -1077,6 +1120,7 @@ const cameraFeed = getElement("cameraFeed");
 if (cameraFeed) {
 
     cameraFeed.onerror = function () {
+        videoNeedsReconnect = true;
 
         setText(
             "videoMessage",

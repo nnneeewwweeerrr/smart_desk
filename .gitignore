@@ -1,6 +1,7 @@
 # Python 虚拟环境
 .venv/
 .venv_mp_test/
+.venv-pi/
 
 # Python 缓存
 __pycache__/
@@ -11,3 +12,6 @@ __pycache__/
 # 日志与临时文件
 *.log
 *.tmp
+
+# 与项目无关的个人文档
+物联网.docx

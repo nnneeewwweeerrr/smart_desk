@@ -1,0 +1,62 @@
+{
+  "backup": "/home/hyz/.local/share/smart-desk/backups/runtime-fix-20261122-210733",
+  "baseline": {
+    "original_records": 15,
+    "original_minutes": 4,
+    "original_reminders": 13
+  },
+  "local_tests": 18,
+  "board_tests": 18,
+  "temporary_database": "acceptance-runtime-20261122.db",
+  "live_camera_online": true,
+  "live_calibration_receipt": "failed",
+  "live_multiple_video_frames": true,
+  "live_saved_seconds": 30,
+  "live_pause_resume": true,
+  "today_totals_unchanged_across_save": true,
+  "test_database_summary": {
+    "total_reminders": 13,
+    "total_sessions": 16,
+    "total_study_minutes": 4.5,
+    "total_study_seconds": 270
+  },
+  "hardware_mode": "mock",
+  "live_posture_accuracy_tested": false,
+  "production_summary": {
+    "total_reminders": 13,
+    "total_sessions": 15,
+    "total_study_minutes": 4.0,
+    "total_study_seconds": 240
+  },
+  "production_status": {
+    "alert": false,
+    "alert_elapsed": 0.0,
+    "alert_remaining": 5.0,
+    "buzzer_enabled": true,
+    "calibrated": false,
+    "calibration_message": "请坐正并积累有效样本后校准",
+    "calibration_required": 10,
+    "calibration_result": "waiting",
+    "calibration_samples": 30,
+    "camera_online": true,
+    "device_mode": "mock",
+    "light": false,
+    "person_detected": true,
+    "posture": "WAIT CALIBRATION",
+    "posture_command_id": 0,
+    "remaining_seconds": 1500,
+    "reminder_count": 0,
+    "reminder_scope": "current_session",
+    "session_start": null,
+    "study_minutes": 0.0,
+    "study_status": "idle",
+    "timer_phase": "idle",
+    "total_reminder_count": 0,
+    "total_study_seconds": 0,
+    "uptime_seconds": 14
+  },
+  "production_service_active": true,
+  "frontend_behavior_test": true,
+  "checked_at": "2026-11-22T21:16:37+08:00",
+  "original_record_fields_preserved": true
+}

@@ -5,6 +5,7 @@ class OLEDDisplay:
     def __init__(self, mock=True):
         self.mock = mock
         self.is_open = True
+        self._last_status = None
 
         print("OLED模块初始化成功")
         print("当前模式：软件模拟模式")
@@ -22,6 +23,10 @@ class OLEDDisplay:
             return
 
         if self.mock:
+            status = (posture, study_minutes, reminder_count, study_status)
+            if status == self._last_status:
+                return
+            self._last_status = status
             print("\n========== SMART DESK ==========")
             print(f"当前坐姿：{posture}")
             print(f"学习时间：{study_minutes} 分钟")

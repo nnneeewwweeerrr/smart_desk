@@ -130,53 +130,18 @@ def get_summary():
 def get_today_stats():
 
     today = datetime.now().strftime("%Y-%m-%d")
-
-    daily_records = db.get_daily_stats(1)
-
-    saved_minutes = 0
-
-    if daily_records:
-
-        saved_minutes = float(
-            daily_records[0].get("minutes", 0) or 0
-        )
-
-    saved_reminders = 0
-
-    records = db.get_records(limit=1000)
-
-    for record in records:
-
-        start_time = record[1] or ""
-
-        if start_time[:10] == today:
-
-            saved_reminders += int(
-                record[4] or 0
-            )
-
-    current_state = system_state.get_state()
-
-    current_seconds = int(
-        current_state.get("total_study_seconds", 0) or 0
-    )
-
-    current_reminders = int(
-        current_state.get("reminder_count", 0) or 0
-    )
-
-    total_seconds = (
-        saved_minutes * 60 + current_seconds
-    )
-
+    with system_state.lock:
+        saved = db.get_day_summary(today)
+        current = system_state.get_state()
+        # Archive whole sessions by local start date, including midnight crossings.
+        belongs_today = str(current.get("session_start") or "")[:10] == today
+        seconds = saved["seconds"] + (current.get("total_study_seconds", 0) if belongs_today else 0)
+        reminders = saved["reminders"] + (current.get("reminder_count", 0) if belongs_today else 0)
     return jsonify({
-        "date": today,
-        "today_study_minutes": round(
-            total_seconds / 60, 1
-        ),
-        "today_reminders": (
-            saved_reminders + current_reminders
-        )
+        "date": today, "date_policy": "session_start_date",
+        "today_study_seconds": seconds,
+        "today_study_minutes": round(seconds / 60, 2),
+        "today_reminders": reminders,
     })
 
 
@@ -216,7 +181,8 @@ def get_records():
             "id": record[0],
             "start_time": record[1],
             "end_time": record[2],
-            "study_minutes": record[3],
+            "study_minutes": round(record[3], 2),
+            "study_seconds": record[6],
             "reminder_count": record[4],
             "posture_status": record[5]
         })
@@ -233,7 +199,7 @@ def control_light():
 
     data = request.get_json(silent=True) or {}
 
-    if not isinstance(data.get("enabled"), bool):
+    if not isinstance(data, dict) or not isinstance(data.get("enabled"), bool):
 
         return jsonify({
             "success": False,
@@ -259,7 +225,7 @@ def control_buzzer():
 
     data = request.get_json(silent=True) or {}
 
-    if not isinstance(data.get("enabled"), bool):
+    if not isinstance(data, dict) or not isinstance(data.get("enabled"), bool):
 
         return jsonify({
             "success": False,
@@ -307,7 +273,7 @@ def control_timer(action):
 
         return jsonify({
             "success": False,
-            "message": "计时指令发送失败"
+            "message": "上一条计时指令正在处理中，请稍后重试"
         }), 400
 
     messages = {
@@ -343,30 +309,12 @@ def control_posture(action):
             "message": "不支持的姿态控制操作"
         }), 400
 
-    accepted = system_state.set_posture_command(
-        action
-    )
-
-    if not accepted:
-
-        return jsonify({
-            "success": False,
-            "message": "姿态控制指令发送失败"
-        }), 400
-
-    messages = {
-        "calibrate": (
-            "姿态初始校准指令已发送，请保持正常坐姿"
-        ),
-        "reset_calibration": (
-            "重新等待姿态校准指令已发送"
-        )
-    }
-
-    return jsonify({
-        "success": True,
-        "message": messages[action]
-    })
+    with system_state.lock:
+        if not system_state.set_posture_command(action):
+            return jsonify(success=False, message="上一条姿态指令正在处理中，请稍后重试"), 409
+        command_id = system_state.get_state()["posture_command_id"]
+    return jsonify(success=True, command_id=command_id,
+                   message="指令已接收，等待实际执行结果")
 
 
 # =====================================================
